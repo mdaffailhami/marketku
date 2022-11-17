@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'pages/sign_up/sign_up.dart';
 import 'splash_screen.dart';
 
 void main() {
@@ -61,9 +62,9 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: theme,
       darkTheme: darkTheme,
-      home: MySplashScreen(
+      home: const MySplashScreen(
         duration: Duration(seconds: 2),
-        home: Text('HOME'),
+        home: MySignUpPage(),
       ),
     );
   }
