@@ -6,17 +6,23 @@ class MyTextFormField extends StatelessWidget {
     this.labelText,
     this.hintText,
     this.obscureText = false,
-    this.validator,
+    this.textInputAction,
+    this.suffixIcon,
     this.controller,
+    this.validator,
     this.onChanged,
+    this.onFieldSubmitted,
   }) : super(key: key);
 
   final String? labelText;
   final String? hintText;
   final bool obscureText;
-  final String? Function(String? value)? validator;
+  final TextInputAction? textInputAction;
+  final Widget? suffixIcon;
   final TextEditingController? controller;
+  final String? Function(String? value)? validator;
   final void Function(String value)? onChanged;
+  final void Function(String value)? onFieldSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,8 @@ class MyTextFormField extends StatelessWidget {
       onChanged: onChanged,
       obscureText: obscureText,
       validator: validator,
+      textInputAction: textInputAction,
+      onFieldSubmitted: onFieldSubmitted,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: labelText,
@@ -38,6 +46,7 @@ class MyTextFormField extends StatelessWidget {
               color: Theme.of(context).colorScheme.outline,
             ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+        suffixIcon: suffixIcon,
       ),
     );
   }

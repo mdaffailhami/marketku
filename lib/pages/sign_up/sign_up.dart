@@ -18,6 +18,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
   final formKey = GlobalKey<FormState>();
   var isEmailAlreadyInUse = false;
   var isLoading = false;
+  var isPasswordVisible = false;
 
   var nama = '';
   var alamatEmail = '';
@@ -38,12 +39,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
 
       if (addAkun.sukses) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Akun berhasil didaftarkan!',
-              style: TextStyle(color: Colors.green),
-            ),
-          ),
+          const SnackBar(content: Text('Akun berhasil didaftarkan!')),
         );
 
         gantiKeHalamanSignIn();
@@ -95,6 +91,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
                               MyTextFormField(
                                 labelText: 'Nama',
                                 hintText: 'Masukkan nama anda',
+                                textInputAction: TextInputAction.next,
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Nama minimal 1 karakter';
@@ -110,6 +107,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
                               MyTextFormField(
                                 labelText: 'Email',
                                 hintText: 'Masukkan alamat email anda',
+                                textInputAction: TextInputAction.next,
                                 validator: (value) {
                                   if (!isEmail(value ?? '')) {
                                     return 'Email tidak valid!';
@@ -128,7 +126,18 @@ class _MySignUpPageState extends State<MySignUpPage> {
                               MyTextFormField(
                                 labelText: 'Password',
                                 hintText: 'Masukkan password yang kuat!',
-                                obscureText: true,
+                                obscureText: !isPasswordVisible,
+                                textInputAction: TextInputAction.send,
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() =>
+                                        isPasswordVisible = !isPasswordVisible);
+                                  },
+                                  icon: isPasswordVisible
+                                      ? const Icon(Icons.visibility_off)
+                                      : const Icon(Icons.visibility),
+                                ),
+                                onFieldSubmitted: (_) => daftarkanAkun(),
                                 validator: (value) => value!.length < 6
                                     ? 'Password minimal 6 karakter!'
                                     : null,
@@ -163,62 +172,6 @@ class _MySignUpPageState extends State<MySignUpPage> {
                                 ),
                                 child: const Text('Daftar'),
                               ),
-                              // SizedBox(height: 2),
-                              // Row(
-                              //   children: [
-                              //     Expanded(
-                              //       child: Divider(indent: 5, endIndent: 10.0),
-                              //     ),
-                              //     Text(
-                              //       "ATAU",
-                              //       style: TextStyle(
-                              //           color: Theme.of(context).brightness ==
-                              //                   Brightness.dark
-                              //               ? Theme.of(context)
-                              //                   .colorScheme
-                              //                   .outline
-                              //               : Colors.grey,
-                              //           fontSize: 12),
-                              //     ),
-                              //     Expanded(
-                              //       child: Divider(indent: 10.0, endIndent: 5),
-                              //     ),
-                              //   ],
-                              // ),
-                              // SizedBox(height: 2),
-                              // TextButton(
-                              //   onPressed: () {},
-                              //   style: TextButton.styleFrom(
-                              //     backgroundColor: Theme.of(context)
-                              //         .colorScheme
-                              //         .surfaceVariant
-                              //         .withOpacity(0.7),
-                              //     foregroundColor: Theme.of(context)
-                              //         .colorScheme
-                              //         .onSurfaceVariant,
-                              //     fixedSize: Size.fromWidth(
-                              //         MediaQuery.of(context).size.width),
-                              //   ),
-                              //   child: Stack(
-                              //     alignment: Alignment.centerLeft,
-                              //     children: [
-                              //       SizedBox(
-                              //         width: double.infinity,
-                              //         child: Text(
-                              //           'Daftar dengan Google',
-                              //           textAlign: TextAlign.center,
-                              //           style: TextStyle(
-                              //             color: Theme.of(context)
-                              //                 .colorScheme
-                              //                 .primary,
-                              //           ),
-                              //         ),
-                              //       ),
-                              //       SvgPicture.asset('assets/google.svg',
-                              //           width: 26),
-                              //     ],
-                              //   ),
-                              // ),
                               const SizedBox(height: 16),
                               RichText(
                                 text: TextSpan(
