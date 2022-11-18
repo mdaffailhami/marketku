@@ -163,62 +163,6 @@ class _MySignUpPageState extends State<MySignUpPage> {
                                 ),
                                 child: const Text('Daftar'),
                               ),
-                              // SizedBox(height: 2),
-                              // Row(
-                              //   children: [
-                              //     Expanded(
-                              //       child: Divider(indent: 5, endIndent: 10.0),
-                              //     ),
-                              //     Text(
-                              //       "ATAU",
-                              //       style: TextStyle(
-                              //           color: Theme.of(context).brightness ==
-                              //                   Brightness.dark
-                              //               ? Theme.of(context)
-                              //                   .colorScheme
-                              //                   .outline
-                              //               : Colors.grey,
-                              //           fontSize: 12),
-                              //     ),
-                              //     Expanded(
-                              //       child: Divider(indent: 10.0, endIndent: 5),
-                              //     ),
-                              //   ],
-                              // ),
-                              // SizedBox(height: 2),
-                              // TextButton(
-                              //   onPressed: () {},
-                              //   style: TextButton.styleFrom(
-                              //     backgroundColor: Theme.of(context)
-                              //         .colorScheme
-                              //         .surfaceVariant
-                              //         .withOpacity(0.7),
-                              //     foregroundColor: Theme.of(context)
-                              //         .colorScheme
-                              //         .onSurfaceVariant,
-                              //     fixedSize: Size.fromWidth(
-                              //         MediaQuery.of(context).size.width),
-                              //   ),
-                              //   child: Stack(
-                              //     alignment: Alignment.centerLeft,
-                              //     children: [
-                              //       SizedBox(
-                              //         width: double.infinity,
-                              //         child: Text(
-                              //           'Daftar dengan Google',
-                              //           textAlign: TextAlign.center,
-                              //           style: TextStyle(
-                              //             color: Theme.of(context)
-                              //                 .colorScheme
-                              //                 .primary,
-                              //           ),
-                              //         ),
-                              //       ),
-                              //       SvgPicture.asset('assets/google.svg',
-                              //           width: 26),
-                              //     ],
-                              //   ),
-                              // ),
                               const SizedBox(height: 16),
                               RichText(
                                 text: TextSpan(
