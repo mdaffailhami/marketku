@@ -95,6 +95,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
                               MyTextFormField(
                                 labelText: 'Nama',
                                 hintText: 'Masukkan nama anda',
+                                textInputAction: TextInputAction.next,
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Nama minimal 1 karakter';
@@ -110,6 +111,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
                               MyTextFormField(
                                 labelText: 'Email',
                                 hintText: 'Masukkan alamat email anda',
+                                textInputAction: TextInputAction.next,
                                 validator: (value) {
                                   if (!isEmail(value ?? '')) {
                                     return 'Email tidak valid!';
@@ -129,6 +131,8 @@ class _MySignUpPageState extends State<MySignUpPage> {
                                 labelText: 'Password',
                                 hintText: 'Masukkan password yang kuat!',
                                 obscureText: true,
+                                textInputAction: TextInputAction.send,
+                                onFieldSubmitted: (_) => daftarkanAkun(),
                                 validator: (value) => value!.length < 6
                                     ? 'Password minimal 6 karakter!'
                                     : null,
