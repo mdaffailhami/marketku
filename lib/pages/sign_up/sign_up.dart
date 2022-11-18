@@ -39,12 +39,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
 
       if (addAkun.sukses) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Akun berhasil didaftarkan!',
-              style: TextStyle(color: Colors.green),
-            ),
-          ),
+          const SnackBar(content: Text('Akun berhasil didaftarkan!')),
         );
 
         gantiKeHalamanSignIn();
