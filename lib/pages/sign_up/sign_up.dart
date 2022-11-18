@@ -18,6 +18,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
   final formKey = GlobalKey<FormState>();
   var isEmailAlreadyInUse = false;
   var isLoading = false;
+  var isPasswordVisible = false;
 
   var nama = '';
   var alamatEmail = '';
@@ -130,8 +131,17 @@ class _MySignUpPageState extends State<MySignUpPage> {
                               MyTextFormField(
                                 labelText: 'Password',
                                 hintText: 'Masukkan password yang kuat!',
-                                obscureText: true,
+                                obscureText: !isPasswordVisible,
                                 textInputAction: TextInputAction.send,
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() =>
+                                        isPasswordVisible = !isPasswordVisible);
+                                  },
+                                  icon: isPasswordVisible
+                                      ? const Icon(Icons.visibility_off)
+                                      : const Icon(Icons.visibility),
+                                ),
                                 onFieldSubmitted: (_) => daftarkanAkun(),
                                 validator: (value) => value!.length < 6
                                     ? 'Password minimal 6 karakter!'

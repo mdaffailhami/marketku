@@ -7,8 +7,9 @@ class MyTextFormField extends StatelessWidget {
     this.hintText,
     this.obscureText = false,
     this.textInputAction,
-    this.validator,
+    this.suffixIcon,
     this.controller,
+    this.validator,
     this.onChanged,
     this.onFieldSubmitted,
   }) : super(key: key);
@@ -17,8 +18,9 @@ class MyTextFormField extends StatelessWidget {
   final String? hintText;
   final bool obscureText;
   final TextInputAction? textInputAction;
-  final String? Function(String? value)? validator;
+  final Widget? suffixIcon;
   final TextEditingController? controller;
+  final String? Function(String? value)? validator;
   final void Function(String value)? onChanged;
   final void Function(String value)? onFieldSubmitted;
 
@@ -44,6 +46,7 @@ class MyTextFormField extends StatelessWidget {
               color: Theme.of(context).colorScheme.outline,
             ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+        suffixIcon: suffixIcon,
       ),
     );
   }
