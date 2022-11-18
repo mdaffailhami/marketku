@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "342610695345",
+    "project_id": "marketku-28c01",
+    "storage_bucket": "marketku-28c01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342610695345:android:5e0ae6eac9b50db997be90",
+        "android_client_info": {
+          "package_name": "com.mdi.marketku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342610695345-1dnuh10vdsu8jpngof20c3k7l8atfpam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwhYpjulLKcnbn6Vt6Upbk2ojnxVnJqf8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342610695345-1dnuh10vdsu8jpngof20c3k7l8atfpam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
