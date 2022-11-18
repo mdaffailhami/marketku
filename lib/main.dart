@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'pages/sign_up/sign_up.dart';
 import 'firebase_options.dart';
 import 'splash_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -67,9 +69,9 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: theme,
       darkTheme: darkTheme,
-      home: MySplashScreen(
+      home: const MySplashScreen(
         duration: Duration(seconds: 2),
-        home: Text('HOME'),
+        home: MySignUpPage(),
       ),
     );
   }
