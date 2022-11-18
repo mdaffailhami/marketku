@@ -14,7 +14,7 @@ class MyTextFormField extends StatelessWidget {
   final String? hintText;
   final bool obscureText;
   final TextEditingController? controller;
-  final void Function(String lol)? onChanged;
+  final void Function(String value)? onChanged;
 
   @override
   Widget build(BuildContext context) {
