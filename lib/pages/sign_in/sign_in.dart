@@ -33,13 +33,17 @@ class _MySignInPageState extends State<MySignInPage> {
       final masuk = await Akun.masuk(alamatEmail, kataSandi);
 
       if (masuk.sukses) {
-        showSnackBarMasukberhasil();
+        showSnackBar(text: masuk.pesan);
         gantiKeHalamanHome();
       } else {
         if (masuk.pesan == 'user-not-found' || masuk.pesan == 'invalid-email') {
           isUserNotFound = true;
         } else if (masuk.pesan == 'wrong-password') {
           isPasswordWrong = true;
+        } else {
+          showSnackBar(
+            text: 'Masuk gagal!(${masuk.pesan}',
+          );
         }
 
         formKey.currentState!.validate();
@@ -49,9 +53,9 @@ class _MySignInPageState extends State<MySignInPage> {
     setState(() => isLoading = false);
   }
 
-  void showSnackBarMasukberhasil() {
+  void showSnackBar({required String text}) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Masuk berhasil!')),
+      SnackBar(content: Text(text)),
     );
   }
 
