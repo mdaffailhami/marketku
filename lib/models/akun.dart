@@ -35,4 +35,25 @@ class Akun {
       return Respon(sukses: false, pesan: (e as FirebaseAuthException).code);
     }
   }
+
+  static Future<Respon> masuk(String alamatEmail, String kataSandi) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: alamatEmail, password: kataSandi);
+
+      return Respon(sukses: true, pesan: 'Masuk berhasil!');
+    } catch (e) {
+      return Respon(sukses: false, pesan: (e as FirebaseAuthException).code);
+    }
+  }
+
+  static Future<Respon> resetPassword(String alamatEmail) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: alamatEmail);
+
+      return Respon(sukses: true, pesan: 'Email verifikasi terkirim!');
+    } catch (e) {
+      return Respon(sukses: false, pesan: (e as FirebaseAuthException).code);
+    }
+  }
 }
