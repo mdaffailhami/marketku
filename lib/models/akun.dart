@@ -47,11 +47,13 @@ class Akun {
     }
   }
 
-  // static Future<Respon> resetPassword(String alamatEmail)async {
-  //   try {
+  static Future<Respon> resetPassword(String alamatEmail) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: alamatEmail);
 
-  //   } catch (e) {
-
-  //   }
-  // }
+      return Respon(sukses: true, pesan: 'Email verifikasi terkirim!');
+    } catch (e) {
+      return Respon(sukses: false, pesan: (e as FirebaseAuthException).code);
+    }
+  }
 }
