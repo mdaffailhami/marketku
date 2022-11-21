@@ -6,8 +6,11 @@ class MyTextFormField extends StatelessWidget {
     this.labelText,
     this.hintText,
     this.obscureText = false,
+    this.keyboardType,
     this.textInputAction,
     this.suffixIcon,
+    this.maxLines,
+    this.verticalPadding,
     this.controller,
     this.validator,
     this.onChanged,
@@ -17,8 +20,11 @@ class MyTextFormField extends StatelessWidget {
   final String? labelText;
   final String? hintText;
   final bool obscureText;
+  final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final Widget? suffixIcon;
+  final int? maxLines;
+  final double? verticalPadding;
   final TextEditingController? controller;
   final String? Function(String? value)? validator;
   final void Function(String value)? onChanged;
@@ -31,8 +37,10 @@ class MyTextFormField extends StatelessWidget {
       onChanged: onChanged,
       obscureText: obscureText,
       validator: validator,
+      keyboardType: keyboardType,
       textInputAction: textInputAction,
       onFieldSubmitted: onFieldSubmitted,
+      maxLines: maxLines,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: labelText,
@@ -45,7 +53,8 @@ class MyTextFormField extends StatelessWidget {
               fontWeight: FontWeight.w400,
               color: Theme.of(context).colorScheme.outline,
             ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 12, vertical: verticalPadding ?? 0),
         suffixIcon: suffixIcon,
       ),
     );

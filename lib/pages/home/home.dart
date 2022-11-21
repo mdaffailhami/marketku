@@ -57,10 +57,10 @@ class _MyHomePageState extends State<MyHomePage>
             ),
           ];
         },
-        body: const [
-          MyBerandaPage(),
-          MyMarketKuPage(),
-          MyPesanPage(),
+        body: [
+          const MyBerandaPage(),
+          MyMarketKuPage(tabController: tabController),
+          const MyPesanPage(),
         ][currentPageIndex],
       ),
     );

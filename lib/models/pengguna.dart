@@ -1,8 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:marketku/models/pengaturan_pengguna.dart';
+
+import 'barang.dart';
+import 'jasa.dart';
+import 'produk.dart';
+import 'respon.dart';
 
 class Pengguna {
   Pengguna({
+    required this.id,
     required this.nama,
     required this.alamatEmail,
     this.urlFotoProfil,
@@ -10,6 +17,18 @@ class Pengguna {
     this.pengaturan,
   });
 
+  factory Pengguna.fromJson(Map<String, dynamic> data) {
+    return Pengguna(
+      id: data['id'],
+      nama: data['nama'],
+      alamatEmail: data['alamat_email'],
+      urlFotoProfil: data['url_foto_profil'],
+      deskripsi: data['deskripsi'],
+      pengaturan: data['pengaturan'],
+    );
+  }
+
+  final String id;
   String nama;
   String alamatEmail;
   String? urlFotoProfil;
@@ -18,8 +37,37 @@ class Pengguna {
 
   static var collection = FirebaseFirestore.instance.collection('pengguna');
 
+  static Future<Pengguna?> getById(String id) async {
+    final pengguna = (await collection.doc(id).get()).data();
+
+    if (pengguna == null) return null;
+
+    return Pengguna.fromJson(pengguna);
+  }
+
+  Future<void> addProduk(Produk data) async {
+    final pengguna =
+        await Pengguna.getById(FirebaseAuth.instance.currentUser!.uid);
+
+    if (data.runtimeType == Barang) {
+      await collection
+          .doc(pengguna!.id)
+          .collection('barang')
+          .doc(data.id)
+          .set(data.toJson());
+    } else if (data.runtimeType == Jasa) {
+      data = data as Jasa;
+      collection
+          .doc(pengguna!.id)
+          .collection('jasa')
+          .doc(data.id)
+          .set(data.toJson());
+    }
+  }
+
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'nama': nama,
       'alamat_email': alamatEmail,
       'url_foto_profil': urlFotoProfil,
