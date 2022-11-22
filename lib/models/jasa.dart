@@ -15,6 +15,7 @@ class Jasa extends Produk {
     required String lokasi,
     required this.kategori,
   }) : super(
+          id: id,
           urlFoto: urlFoto,
           nama: nama,
           deskripsi: deskripsi,

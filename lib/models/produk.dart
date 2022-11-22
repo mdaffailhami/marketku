@@ -4,14 +4,15 @@ enum JenisProduk { barang, jasa }
 
 abstract class Produk {
   Produk({
+    String? id,
     required this.urlFoto,
     required this.nama,
     required this.deskripsi,
     required this.harga,
     required this.lokasi,
-  });
+  }) : id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
 
-  final String id = DateTime.now().millisecondsSinceEpoch.toString();
+  String id;
   String urlFoto;
   String nama;
   String deskripsi;

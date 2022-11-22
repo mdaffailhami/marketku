@@ -65,6 +65,35 @@ class Pengguna {
     }
   }
 
+  static Future<List<Barang>> getBarang({KategoriBarang? kategori}) async {
+    final pengguna =
+        await Pengguna.getById(FirebaseAuth.instance.currentUser!.uid);
+
+    List? docs;
+    if (kategori == null) {
+      docs = (await collection
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('barang')
+              .get())
+          .docs;
+    } else {
+      docs = (await collection
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('barang')
+              .where('kategori', arrayContains: kategori.name)
+              .get())
+          .docs;
+    }
+
+    List<Barang> result = [];
+
+    for (int i = 0; i < docs.length; i++) {
+      result.add(Barang.fromJson(docs[i].data()));
+    }
+
+    return result;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
