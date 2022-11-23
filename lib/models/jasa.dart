@@ -23,6 +23,25 @@ class Jasa extends Produk {
           lokasi: lokasi,
         );
 
+  factory Jasa.fromJson(Map<String, dynamic> data) {
+    List<KategoriJasa> kategori = [];
+
+    for (int i = 0; i < data['kategori'].length; i++) {
+      kategori.add(KategoriJasa.values.firstWhere((element) =>
+          element.toString() == 'KategoriJasa.${data['kategori'][i]}'));
+    }
+
+    return Jasa(
+      id: data['id'],
+      urlFoto: data['url_foto'],
+      nama: data['nama'],
+      deskripsi: data['deskripsi'],
+      harga: Rupiah(data['harga']),
+      lokasi: data['lokasi'],
+      kategori: kategori,
+    );
+  }
+
   List<KategoriJasa> kategori;
 
   @override

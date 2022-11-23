@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:marketku/models/barang.dart';
 import 'package:marketku/models/pengguna.dart';
-import 'package:marketku/models/rupiah.dart';
 import 'package:marketku/widgets/choice_chip.dart';
 import 'package:marketku/widgets/produk_card.dart';
-
-import 'daftar_barang.dart';
-import 'daftar_kategori.dart';
 
 class MyBarangPage extends StatefulWidget {
   const MyBarangPage({super.key});
@@ -63,7 +59,8 @@ class _MyBarangPageState extends State<MyBarangPage> {
                         ? Pengguna.getBarang()
                         : Pengguna.getBarang(
                             kategori:
-                                KategoriBarang.values[selectedKategoriIndex]),
+                                KategoriBarang.values[selectedKategoriIndex],
+                          ),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return const Center(
@@ -78,8 +75,6 @@ class _MyBarangPageState extends State<MyBarangPage> {
                       }
 
                       final List<Barang>? barang = snapshot.data;
-                      print(barang![0].toJson());
-                      print(barang[1].toJson());
 
                       return Wrap(
                         children: List.generate(

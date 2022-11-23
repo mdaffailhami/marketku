@@ -66,9 +66,6 @@ class Pengguna {
   }
 
   static Future<List<Barang>> getBarang({KategoriBarang? kategori}) async {
-    final pengguna =
-        await Pengguna.getById(FirebaseAuth.instance.currentUser!.uid);
-
     List? docs;
     if (kategori == null) {
       docs = (await collection
@@ -80,15 +77,44 @@ class Pengguna {
       docs = (await collection
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .collection('barang')
-              .where('kategori', arrayContains: kategori.name)
+              .where(
+                'kategori',
+                arrayContains: kategori.name,
+              )
               .get())
           .docs;
     }
 
     List<Barang> result = [];
 
-    for (int i = 0; i < docs.length; i++) {
+    for (int i = docs.length - 1; i >= 0; i--) {
       result.add(Barang.fromJson(docs[i].data()));
+    }
+
+    return result;
+  }
+
+  static Future<List<Jasa>> getJasa({KategoriJasa? kategori}) async {
+    List? docs;
+    if (kategori == null) {
+      docs = (await collection
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('jasa')
+              .get())
+          .docs;
+    } else {
+      docs = (await collection
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('jasa')
+              .where('kategori', arrayContains: kategori.name)
+              .get())
+          .docs;
+    }
+
+    List<Jasa> result = [];
+
+    for (int i = docs.length - 1; i >= 0; i--) {
+      result.add(Jasa.fromJson(docs[i].data()));
     }
 
     return result;
