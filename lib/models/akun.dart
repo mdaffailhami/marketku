@@ -23,7 +23,10 @@ class Akun {
         password: akun._kataSandi,
       );
 
-      final pengguna = Pengguna(nama: akun.nama, alamatEmail: akun.alamatEmail);
+      final pengguna = Pengguna(
+          id: userCredential.user!.uid,
+          nama: akun.nama,
+          alamatEmail: akun.alamatEmail);
 
       FirebaseFirestore.instance
           .collection('pengguna')
