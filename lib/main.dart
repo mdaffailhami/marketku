@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:marketku/pages/home/home.dart';
-import 'package:marketku/pages/sign_in/sign_in.dart';
 
 import 'firebase_options.dart';
 import 'splash_screen.dart';
@@ -71,11 +69,9 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: theme,
       darkTheme: darkTheme,
-      home: MySplashScreen(
-        duration: const Duration(seconds: 2),
-        home: FirebaseAuth.instance.currentUser != null
-            ? const MyHomePage()
-            : const MySignInPage(),
+      home: const MySplashScreen(
+        duration: Duration(seconds: 2),
+        home: MyHomePage(),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:marketku/models/produk.dart';
-import 'package:intl/intl.dart';
 
 class MyDetailProdukPage extends StatefulWidget {
   const MyDetailProdukPage({Key? key, required this.produk}) : super(key: key);
@@ -52,9 +51,9 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
     return Scaffold(
       bottomNavigationBar: Row(
         children: [
-          ElevatedButton(onPressed: () {}, child: Text('Aowkwk')),
-          ElevatedButton(onPressed: () {}, child: Text('Aowkwk')),
-          ElevatedButton(onPressed: () {}, child: Text('Aowkwk')),
+          ElevatedButton(onPressed: () {}, child: const Text('Aowkwk')),
+          ElevatedButton(onPressed: () {}, child: const Text('Aowkwk')),
+          ElevatedButton(onPressed: () {}, child: const Text('Aowkwk')),
         ],
       ),
       body: CustomScrollView(
@@ -70,7 +69,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                 Icons.arrow_back,
                 shadows: isShrink && isOnLightMode
                     ? null
-                    : [Shadow(blurRadius: blurRadius)],
+                    : [const Shadow(blurRadius: blurRadius)],
               ),
               tooltip: 'Kembali',
               color: isShrink && isOnLightMode ? Colors.black : Colors.white,
@@ -82,7 +81,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
               style: TextStyle(
                 shadows: isShrink && isOnLightMode
                     ? null
-                    : [Shadow(blurRadius: blurRadius)],
+                    : [const Shadow(blurRadius: blurRadius)],
               ),
             ),
             // actions: [
@@ -99,12 +98,12 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
 
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: false,
-              titlePadding: EdgeInsets.only(bottom: 16, left: 20),
+              titlePadding: const EdgeInsets.only(bottom: 16, left: 20),
               title: isShrink
                   ? null
                   : Text(
                       widget.produk.nama,
-                      style: TextStyle(
+                      style: const TextStyle(
                         overflow: TextOverflow.ellipsis,
                         shadows: [Shadow(blurRadius: 0.5)],
                       ),
@@ -138,7 +137,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(
+                  const ListTile(
                     contentPadding: EdgeInsets.all(0),
                     leading: CircleAvatar(
                       foregroundImage: NetworkImage(
@@ -146,47 +145,47 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                     ),
                     title: Text('Daffa Ilhami'),
                   ),
-                  Divider(),
+                  const Divider(),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
                         ActionChip(
-                          label: Text('Fashion'),
+                          label: const Text('Fashion'),
                           onPressed: () {},
                           backgroundColor:
                               Theme.of(context).colorScheme.secondaryContainer,
                           side: BorderSide.none,
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         ActionChip(
-                          label: Text('Kuliner'),
+                          label: const Text('Kuliner'),
                           onPressed: () {},
                           backgroundColor:
                               Theme.of(context).colorScheme.secondaryContainer,
                           side: BorderSide.none,
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         ActionChip(
-                          label: Text('Elektronik'),
+                          label: const Text('Elektronik'),
                           onPressed: () {},
                           backgroundColor:
                               Theme.of(context).colorScheme.secondaryContainer,
                           side: BorderSide.none,
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                       ],
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     widget.produk.harga.toString(),
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: Theme.of(context).colorScheme.primary),
                   ),
-                  Text(
+                  const Text(
                       'lorem kjasdbkas sajd baskjdb askdb lasdn lasd lakbdlas blksa bdlas blasjd blasjdb lasj blsaj b'),
-                  SizedBox(height: 2000),
+                  const SizedBox(height: 2000),
                 ],
               ),
             ),

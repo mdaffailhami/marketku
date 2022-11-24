@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 
+import 'pages/barang/barang.dart';
+import 'pages/jasa/jasa.dart';
+
 class MyBerandaPage extends StatelessWidget {
-  const MyBerandaPage({super.key});
+  const MyBerandaPage({
+    Key? key,
+    required this.tabController,
+  }) : super(key: key);
+
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('BERANDA'));
+    return TabBarView(
+      controller: tabController,
+      children: const [
+        MyBarangPage(),
+        MyJasaPage(),
+      ],
+    );
   }
 }
