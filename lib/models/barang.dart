@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -63,11 +61,6 @@ class Barang extends Produk {
               .get())
           .docs;
     } else {
-      print('MASUK LURRRRRR');
-      // try {
-      // } catch (e) {
-      //   print(e);
-      // }
       docs = (await Barang.collection
               .where('id_pengguna', isNotEqualTo: idPengguna)
               .where('kategori', arrayContains: kategori.name)

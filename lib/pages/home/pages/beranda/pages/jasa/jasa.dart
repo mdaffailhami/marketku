@@ -13,12 +13,12 @@ class MyJasaPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyBanner(
+            const MyBanner(
               imageUrl:
                   'https://cdnwpseller.gramedia.net/wp-content/uploads/2021/08/19153353/Usaha-Jasa.jpg',
               text: 'Kami menyediakan berbagai jasa yang layak untuk anda!',
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Text(
               'Jasa populer saat ini',
               style: Theme.of(context)
@@ -26,9 +26,9 @@ class MyJasaPage extends StatelessWidget {
                   .headline6
                   ?.copyWith(fontWeight: FontWeight.w500),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             // MyDaftarKategori(),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             // MyDaftarJasa(),
           ],
         ),

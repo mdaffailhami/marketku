@@ -38,7 +38,7 @@ class MyBanner extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 20,
                       shadows: [
-                        Shadow(blurRadius: 1, offset: Offset(1.5, 1.5))
+                        const Shadow(blurRadius: 1, offset: Offset(1.5, 1.5))
                       ]),
                 ),
               ),

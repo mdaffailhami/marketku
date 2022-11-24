@@ -5,7 +5,6 @@ import 'package:marketku/models/pengaturan_pengguna.dart';
 import 'barang.dart';
 import 'jasa.dart';
 import 'produk.dart';
-import 'respon.dart';
 
 class Pengguna {
   Pengguna({
@@ -46,9 +45,6 @@ class Pengguna {
   }
 
   Future<void> addProduk(Produk data) async {
-    final pengguna =
-        await Pengguna.getById(FirebaseAuth.instance.currentUser!.uid);
-
     if (data.runtimeType == Barang) {
       data = data as Barang;
       await Barang.collection.doc(data.id).set(data.toJson());
@@ -61,7 +57,6 @@ class Pengguna {
   static Future<List<Barang>> getBarang({KategoriBarang? kategori}) async {
     List? docs;
     if (kategori == null) {
-      print('SEMUA');
       docs = (await Barang.collection
               .where(
                 'id_pengguna',

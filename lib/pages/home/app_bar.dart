@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:marketku/main.dart';
 import 'package:marketku/pages/home/home.dart';
-import 'package:marketku/pages/sign_in/sign_in.dart';
 import 'package:marketku/widgets/marketku_logotype.dart';
 
 import 'pages/pencarian/pencarian.dart';

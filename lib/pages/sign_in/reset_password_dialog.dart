@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:marketku/models/akun.dart';
 import 'package:marketku/widgets/text_form_field.dart';
@@ -23,11 +22,11 @@ class _MyResetPasswordDialogState extends State<MyResetPasswordDialog> {
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: Text('Kirim email verifikasi'),
+            title: const Text('Kirim email verifikasi'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Batal'),
+                child: const Text('Batal'),
               ),
               TextButton(
                 onPressed: () async {
@@ -52,10 +51,10 @@ class _MyResetPasswordDialogState extends State<MyResetPasswordDialog> {
                     formKey.currentState!.validate();
                   }
                 },
-                child: Text('Kirim'),
+                child: const Text('Kirim'),
               ),
             ],
-            content: Text(
+            content: const Text(
               'Kami akan mengirimkan email verifikasi ke alamat email yang telah anda masukkan!',
             ),
           );
@@ -75,24 +74,24 @@ class _MyResetPasswordDialogState extends State<MyResetPasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Reset password'),
+      title: const Text('Reset password'),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('Batal'),
+          child: const Text('Batal'),
         ),
         TextButton(
             onPressed: () {
               FocusManager.instance.primaryFocus?.unfocus();
               resetPassword();
             },
-            child: Text('Reset')),
+            child: const Text('Reset')),
       ],
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Masukkan alamat email yang ingin direset passwordnya'),
-          SizedBox(height: 8),
+          const Text('Masukkan alamat email yang ingin direset passwordnya'),
+          const SizedBox(height: 8),
           Form(
             key: formKey,
             child: MyTextFormField(

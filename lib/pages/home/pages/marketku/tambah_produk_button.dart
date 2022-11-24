@@ -17,7 +17,7 @@ class MyTambahProdukButton extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MyTambahProdukPage(),
+            builder: (context) => const MyTambahProdukPage(),
           ),
         );
       },

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marketku/widgets/banner.dart';
-import 'package:flutter/material.dart';
 import 'package:marketku/models/barang.dart';
-import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/widgets/choice_chip.dart';
 import 'package:marketku/widgets/produk_card.dart';
 
@@ -25,12 +23,12 @@ class _MyBarangPageState extends State<MyBarangPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyBanner(
+            const MyBanner(
               imageUrl:
                   'https://c0.wallpaperflare.com/preview/250/807/592/person-human-market-shop.jpg',
               text: 'Kami menyediakan berbagai barang yang layak untuk anda!',
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Text(
               'Barang yang mungkin anda suka',
               style: Theme.of(context)
@@ -38,7 +36,7 @@ class _MyBarangPageState extends State<MyBarangPage> {
                   .headline6
                   ?.copyWith(fontWeight: FontWeight.w500),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(

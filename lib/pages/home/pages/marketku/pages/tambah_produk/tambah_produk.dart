@@ -46,7 +46,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
       barrierDismissible: false,
       context: context,
       builder: (_) {
-        return AlertDialog(
+        return const AlertDialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
           content: Center(
@@ -115,14 +115,14 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
       context: context,
       builder: (_) {
         return SimpleDialog(
-          title: Text('Foto produk'),
+          title: const Text('Foto produk'),
           children: [
             PopupMenuItem(
               onTap: () async {
                 foto = await picker.pickImage(source: ImageSource.camera);
                 setState(() => this.foto = File(foto!.path));
               },
-              child: ListTile(
+              child: const ListTile(
                 contentPadding: EdgeInsets.all(0),
                 leading: Icon(Icons.camera_alt_outlined),
                 title: Text('Tangkap dengan kamera'),
@@ -133,7 +133,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
                 foto = await picker.pickImage(source: ImageSource.gallery);
                 setState(() => this.foto = File(foto!.path));
               },
-              child: ListTile(
+              child: const ListTile(
                 contentPadding: EdgeInsets.all(0),
                 leading: Icon(Icons.photo_outlined),
                 title: Text('Pilih dari galeri'),
@@ -271,7 +271,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
               ),
               Visibility(
                 visible: isKategoriLebihDari3,
-                child: Text(
+                child: const Text(
                   'Kategori tidak boleh lebih dari 3!',
                   style: TextStyle(color: Colors.red),
                 ),

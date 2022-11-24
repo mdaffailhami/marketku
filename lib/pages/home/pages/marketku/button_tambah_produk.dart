@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'pages/tambah_produk/tambah_produk.dart';
 
 class ButtonTambahProduk extends StatefulWidget {
@@ -87,11 +86,11 @@ class _ButtonTambahProdukState extends State<ButtonTambahProduk> {
         // );
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => MyTambahProdukPage(),
+            builder: (context) => const MyTambahProdukPage(),
           ),
         );
       },
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
     );
   }
 }
@@ -115,13 +114,13 @@ class MyDropdownButtonFormField extends StatelessWidget {
       child: DropdownButtonFormField<String>(
         onChanged: onChanged,
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelText: label,
           labelStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
                 fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.outline,
               ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 12),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
         ),
         items: items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
@@ -152,13 +151,13 @@ class MyTextFormField extends StatelessWidget {
       child: TextFormField(
         onChanged: onChanged,
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelText: label,
           labelStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
                 fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.outline,
               ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 12),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
         ),
       ),
     );
