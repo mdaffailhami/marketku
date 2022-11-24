@@ -40,7 +40,7 @@ class MyTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       onFieldSubmitted: onFieldSubmitted,
-      maxLines: maxLines,
+      maxLines: maxLines ?? 1,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: labelText,

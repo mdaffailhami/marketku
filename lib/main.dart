@@ -71,11 +71,9 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: theme,
       darkTheme: darkTheme,
-      home: MySplashScreen(
-        duration: const Duration(seconds: 2),
-        home: FirebaseAuth.instance.currentUser != null
-            ? const MyHomePage()
-            : const MySignInPage(),
+      home: const MySplashScreen(
+        duration: Duration(seconds: 2),
+        home: MyHomePage(),
       ),
     );
   }

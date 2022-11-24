@@ -79,6 +79,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
     if (jenisProduk == JenisProduk.barang) {
       pengguna!.addProduk(
         Barang(
+          idPengguna: pengguna.id,
           urlFoto: urlFoto,
           nama: nama,
           deskripsi: deskripsi,
@@ -90,6 +91,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
     } else if (jenisProduk == JenisProduk.jasa) {
       pengguna!.addProduk(
         Jasa(
+          idPengguna: pengguna.id,
           urlFoto: urlFoto,
           nama: nama,
           deskripsi: deskripsi,

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'produk.dart';
 import 'rupiah.dart';
 
@@ -8,6 +10,7 @@ enum KategoriJasa { Kebersihan, Penampilan }
 class Jasa extends Produk {
   Jasa({
     String? id,
+    required String idPengguna,
     required String urlFoto,
     required String nama,
     required String deskripsi,
@@ -16,6 +19,7 @@ class Jasa extends Produk {
     required this.kategori,
   }) : super(
           id: id,
+          idPengguna: idPengguna,
           urlFoto: urlFoto,
           nama: nama,
           deskripsi: deskripsi,
@@ -33,6 +37,7 @@ class Jasa extends Produk {
 
     return Jasa(
       id: data['id'],
+      idPengguna: data['id_pengguna'],
       urlFoto: data['url_foto'],
       nama: data['nama'],
       deskripsi: data['deskripsi'],
@@ -41,6 +46,8 @@ class Jasa extends Produk {
       kategori: kategori,
     );
   }
+
+  static final collection = FirebaseFirestore.instance.collection('jasa');
 
   List<KategoriJasa> kategori;
 

@@ -50,37 +50,32 @@ class Pengguna {
         await Pengguna.getById(FirebaseAuth.instance.currentUser!.uid);
 
     if (data.runtimeType == Barang) {
-      await collection
-          .doc(pengguna!.id)
-          .collection('barang')
-          .doc(data.id)
-          .set(data.toJson());
+      data = data as Barang;
+      await Barang.collection.doc(data.id).set(data.toJson());
     } else if (data.runtimeType == Jasa) {
       data = data as Jasa;
-      collection
-          .doc(pengguna!.id)
-          .collection('jasa')
-          .doc(data.id)
-          .set(data.toJson());
+      await Jasa.collection.doc(data.id).set(data.toJson());
     }
   }
 
   static Future<List<Barang>> getBarang({KategoriBarang? kategori}) async {
     List? docs;
     if (kategori == null) {
-      docs = (await collection
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .collection('barang')
+      print('SEMUA');
+      docs = (await Barang.collection
+              .where(
+                'id_pengguna',
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+              )
               .get())
           .docs;
     } else {
-      docs = (await collection
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .collection('barang')
+      docs = (await Barang.collection
               .where(
-                'kategori',
-                arrayContains: kategori.name,
+                'id_pengguna',
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid,
               )
+              .where('kategori', arrayContains: kategori.name)
               .get())
           .docs;
     }
@@ -97,15 +92,19 @@ class Pengguna {
   static Future<List<Jasa>> getJasa({KategoriJasa? kategori}) async {
     List? docs;
     if (kategori == null) {
-      docs = (await collection
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .collection('jasa')
+      docs = (await Jasa.collection
+              .where(
+                'id_pengguna',
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+              )
               .get())
           .docs;
     } else {
-      docs = (await collection
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .collection('jasa')
+      docs = (await Jasa.collection
+              .where(
+                'id_pengguna',
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+              )
               .where('kategori', arrayContains: kategori.name)
               .get())
           .docs;

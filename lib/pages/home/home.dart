@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marketku/pages/sign_in/sign_in.dart';
 
 import 'app_bar.dart';
 import 'nav_bar.dart';
@@ -33,6 +35,10 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return const MySignInPage();
+    }
+
     return Scaffold(
       floatingActionButton:
           currentPageIndex == 1 ? const MyTambahProdukButton() : null,
@@ -58,7 +64,9 @@ class _MyHomePageState extends State<MyHomePage>
           ];
         },
         body: [
-          const MyBerandaPage(),
+          MyBerandaPage(
+            tabController: tabController,
+          ),
           MyMarketKuPage(tabController: tabController),
           const MyPesanPage(),
         ][currentPageIndex],
