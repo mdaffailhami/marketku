@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:marketku/models/pengaturan_pengguna.dart';
 
 import 'barang.dart';
 import 'jasa.dart';
@@ -13,27 +12,26 @@ class Pengguna {
     required this.nama,
     required this.alamatEmail,
     this.urlFotoProfil,
-    this.deskripsi,
-    this.pengaturan,
+    this.lokasi,
+    this.nomorWhatsApp,
   });
 
   factory Pengguna.fromJson(Map<String, dynamic> data) {
     return Pengguna(
-      id: data['id'],
-      nama: data['nama'],
-      alamatEmail: data['alamat_email'],
-      urlFotoProfil: data['url_foto_profil'],
-      deskripsi: data['deskripsi'],
-      pengaturan: data['pengaturan'],
-    );
+        id: data['id'],
+        nama: data['nama'],
+        alamatEmail: data['alamat_email'],
+        urlFotoProfil: data['url_foto_profil'],
+        lokasi: data['lokasi'],
+        nomorWhatsApp: data['nomor_whatsapp']);
   }
 
   final String id;
   String nama;
   String alamatEmail;
   String? urlFotoProfil;
-  String? deskripsi;
-  PengaturanPengguna? pengaturan;
+  String? lokasi;
+  String? nomorWhatsApp;
 
   static var collection = FirebaseFirestore.instance.collection('pengguna');
 
@@ -43,6 +41,10 @@ class Pengguna {
     if (pengguna == null) return null;
 
     return Pengguna.fromJson(pengguna);
+  }
+
+  static Future<void> update(Pengguna pengguna) async {
+    await collection.doc(pengguna.id).set(pengguna.toJson());
   }
 
   Future<void> addProduk(Produk data) async {
@@ -126,8 +128,8 @@ class Pengguna {
       'nama': nama,
       'alamat_email': alamatEmail,
       'url_foto_profil': urlFotoProfil,
-      'deskripsi': deskripsi,
-      'pengaturan': pengaturan,
+      'lokasi': lokasi,
+      'nomor_whatsapp': nomorWhatsApp,
     };
   }
 }
