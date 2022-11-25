@@ -60,10 +60,11 @@ class _MySignInPageState extends State<MySignInPage> {
   }
 
   void gantiKeHalamanHome() {
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => const MyHomePage(),
       ),
+      (_) => false,
     );
   }
 

@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'produk.dart';
 import 'rupiah.dart';
@@ -8,6 +9,7 @@ enum KategoriJasa { Kebersihan, Penampilan }
 class Jasa extends Produk {
   Jasa({
     String? id,
+    required String idPengguna,
     required String urlFoto,
     required String nama,
     required String deskripsi,
@@ -16,6 +18,7 @@ class Jasa extends Produk {
     required this.kategori,
   }) : super(
           id: id,
+          idPengguna: idPengguna,
           urlFoto: urlFoto,
           nama: nama,
           deskripsi: deskripsi,
@@ -33,6 +36,7 @@ class Jasa extends Produk {
 
     return Jasa(
       id: data['id'],
+      idPengguna: data['id_pengguna'],
       urlFoto: data['url_foto'],
       nama: data['nama'],
       deskripsi: data['deskripsi'],
@@ -42,7 +46,36 @@ class Jasa extends Produk {
     );
   }
 
+  static final collection = FirebaseFirestore.instance.collection('jasa');
+
   List<KategoriJasa> kategori;
+
+  static Future<List<Jasa>> get({KategoriJasa? kategori}) async {
+    final idPengguna = FirebaseAuth.instance.currentUser!.uid;
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs;
+    if (kategori == null) {
+      docs = (await FirebaseFirestore.instance
+              .collection('jasa')
+              .where('id_pengguna', isNotEqualTo: idPengguna)
+              .get())
+          .docs;
+    } else {
+      docs = (await Jasa.collection
+              .where('id_pengguna', isNotEqualTo: idPengguna)
+              .where('kategori', arrayContains: kategori.name)
+              .get())
+          .docs;
+    }
+
+    List<Jasa> result = [];
+
+    for (int i = docs.length - 1; i >= 0; i--) {
+      result.add(Jasa.fromJson(docs[i].data()));
+    }
+
+    return result;
+  }
 
   @override
   Map<String, dynamic> toJson() {

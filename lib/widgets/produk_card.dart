@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:marketku/models/produk.dart';
-import 'package:intl/intl.dart';
 
 import 'detail_produk_page.dart';
 
@@ -36,7 +35,7 @@ class MyProdukCard extends StatelessWidget {
               color: Theme.of(context).colorScheme.outline,
             ),
           ),
-          surfaceTintColor: Color(0xFFFFFFFF),
+          surfaceTintColor: const Color(0xFFFFFFFF),
           elevation: 0,
           child: SizedBox(
             width: 150,
@@ -58,7 +57,7 @@ class MyProdukCard extends StatelessWidget {
                         right: 6,
                         child: Text(
                           produk.nama,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -79,10 +78,10 @@ class MyProdukCard extends StatelessWidget {
                       Text(
                         produk.harga.toString(),
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Row(
                         children: [
                           Icon(
@@ -94,7 +93,7 @@ class MyProdukCard extends StatelessWidget {
                             child: Text(
                               produk.lokasi,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 10,
                               ),
