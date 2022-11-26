@@ -211,7 +211,7 @@ class _MyProfilPageState extends State<MyProfilPage> {
                       textInputAction: TextInputAction.next,
                     ),
                     MyTextFormField(
-                      onChanged: (String value) => nomorWhatsApp,
+                      onChanged: (String value) => nomorWhatsApp = value,
                       labelText: 'Nomor WhatsApp',
                       initialValue: pengguna.nomorWhatsApp,
                       prefix: const Text('+62'),
