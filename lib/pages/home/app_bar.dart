@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:marketku/pages/home/home.dart';
 import 'package:marketku/models/pengguna.dart';
-import 'package:marketku/pages/home/home.dart';
 import 'package:marketku/pages/home/pages/profil/profil.dart';
 import 'package:marketku/widgets/marketku_logotype.dart';
 
