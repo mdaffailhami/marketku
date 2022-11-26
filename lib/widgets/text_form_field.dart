@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 class MyTextFormField extends StatelessWidget {
   const MyTextFormField({
     Key? key,
+    this.enabled,
     this.labelText,
     this.hintText,
     this.obscureText = false,
+    this.initialValue,
     this.keyboardType,
     this.textInputAction,
     this.suffixIcon,
+    this.prefix,
     this.maxLines,
     this.verticalPadding,
     this.controller,
@@ -17,12 +20,15 @@ class MyTextFormField extends StatelessWidget {
     this.onFieldSubmitted,
   }) : super(key: key);
 
+  final bool? enabled;
   final String? labelText;
   final String? hintText;
   final bool obscureText;
+  final String? initialValue;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final Widget? suffixIcon;
+  final Widget? prefix;
   final int? maxLines;
   final double? verticalPadding;
   final TextEditingController? controller;
@@ -33,8 +39,10 @@ class MyTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       controller: controller,
       onChanged: onChanged,
+      initialValue: initialValue,
       obscureText: obscureText,
       validator: validator,
       keyboardType: keyboardType,
@@ -56,6 +64,7 @@ class MyTextFormField extends StatelessWidget {
         contentPadding: EdgeInsets.symmetric(
             horizontal: 12, vertical: verticalPadding ?? 0),
         suffixIcon: suffixIcon,
+        prefix: prefix,
       ),
     );
   }
