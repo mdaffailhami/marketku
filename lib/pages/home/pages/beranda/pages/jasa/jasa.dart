@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marketku/models/jasa.dart';
+import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/widgets/banner.dart';
 import 'package:marketku/widgets/choice_chip.dart';
 import 'package:marketku/widgets/produk_card.dart';
@@ -94,8 +95,26 @@ class _MyJasaPageState extends State<MyJasaPage> {
                         children: List.generate(
                           jasa!.length,
                           (int i) {
-                            return MyProdukCard(
-                              produk: jasa[i],
+                            return FutureBuilder(
+                              future: Pengguna.getById(jasa[i].idPengguna),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Center(
+                                      child: Text('Gagal memuat produk!'));
+                                }
+
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const SizedBox.shrink();
+                                }
+
+                                final pemilik = snapshot.data!;
+
+                                return MyProdukCard(
+                                  produk: jasa[i],
+                                  pemilik: pemilik,
+                                );
+                              },
                             );
                           },
                         ),

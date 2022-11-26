@@ -1,10 +1,24 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marketku/models/barang.dart';
+import 'package:marketku/models/barang_favorit.dart';
+import 'package:marketku/models/jasa.dart';
+import 'package:marketku/models/jasa_favorit.dart';
+import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/models/produk.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyDetailProdukPage extends StatefulWidget {
-  const MyDetailProdukPage({Key? key, required this.produk}) : super(key: key);
+  const MyDetailProdukPage(
+      {Key? key,
+      required this.produk,
+      required this.pemilik,
+      this.currentUserIsPemilik = false})
+      : super(key: key);
 
   final Produk produk;
+  final Pengguna pemilik;
+  final bool currentUserIsPemilik;
 
   @override
   State<MyDetailProdukPage> createState() => _MyDetailProdukPageState();
@@ -44,17 +58,157 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
     super.dispose();
   }
 
+  Widget buildFavoritButton() {
+    final dummyIconButton = IconButton(
+      onPressed: () {},
+      icon: const Icon(
+        Icons.bookmark_outline,
+        color: Colors.transparent,
+      ),
+    );
+
+    if (widget.produk.runtimeType == Barang) {
+      final barang = widget.produk as Barang;
+
+      return FutureBuilder(
+        future: Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
+        builder: (_, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return dummyIconButton;
+          }
+
+          final currentUser = snapshot.data;
+
+          return FutureBuilder(
+            future: BarangFavorit.checkIfBarangIsSaved(barang, currentUser!),
+            builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return dummyIconButton;
+              }
+
+              if (snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data!) {
+                  return IconButton(
+                    tooltip: 'Hapus dari favorit',
+                    onPressed: () async {
+                      await currentUser.removeBarangFavorit(barang);
+
+                      setState(() {});
+                    },
+                    icon: const Icon(
+                      Icons.bookmark,
+                      color: Colors.white,
+                      shadows: [Shadow(blurRadius: 2)],
+                    ),
+                  );
+                } else {
+                  return IconButton(
+                    tooltip: 'Tambahkan ke favorit',
+                    onPressed: () async {
+                      await currentUser.addBarangFavorit(barang);
+
+                      setState(() {});
+                    },
+                    icon: const Icon(
+                      Icons.bookmark_outline,
+                      color: Colors.white,
+                      shadows: [Shadow(blurRadius: 2)],
+                    ),
+                  );
+                }
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          );
+        },
+      );
+    } else {
+      final jasa = widget.produk as Jasa;
+
+      return FutureBuilder(
+        future: Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
+        builder: (_, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return dummyIconButton;
+          }
+
+          final currentUser = snapshot.data;
+
+          return FutureBuilder(
+            future: JasaFavorit.checkIfJasaIsSaved(jasa, currentUser!),
+            builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return dummyIconButton;
+              }
+
+              if (snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data!) {
+                  return IconButton(
+                    tooltip: 'Hapus dari favorit',
+                    onPressed: () async {
+                      await currentUser.removeJasaFavorit(jasa);
+
+                      setState(() {});
+                    },
+                    icon: const Icon(
+                      Icons.bookmark,
+                      color: Colors.white,
+                      shadows: [Shadow(blurRadius: 2)],
+                    ),
+                  );
+                } else {
+                  return IconButton(
+                    tooltip: 'Tambahkan ke favorit',
+                    onPressed: () async {
+                      await currentUser.addJasaFavorit(jasa);
+
+                      setState(() {});
+                    },
+                    icon: const Icon(
+                      Icons.bookmark_outline,
+                      color: Colors.white,
+                      shadows: [Shadow(blurRadius: 2)],
+                    ),
+                  );
+                }
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    const blurRadius = 0.2;
+    const String urlFotoProfilDefault =
+        'https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=170x170&k=20&c=pVkxcoiVUlD0uOzasLU41qdrAQpT1B3vBfKSJQWuNq4=';
 
     return Scaffold(
-      bottomNavigationBar: Row(
-        children: [
-          ElevatedButton(onPressed: () {}, child: const Text('Aowkwk')),
-          ElevatedButton(onPressed: () {}, child: const Text('Aowkwk')),
-          ElevatedButton(onPressed: () {}, child: const Text('Aowkwk')),
-        ],
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.onPrimaryContainer
+            : Theme.of(context).colorScheme.onPrimary,
+        onPressed: () async {
+          final url =
+              Uri.parse('https://wa.me/62${widget.pemilik.nomorWhatsApp}');
+
+          if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Gagal menghubungi penjual!')),
+            );
+          }
+        },
+        icon: const Icon(Icons.message_outlined),
+        label: const Text('Hubungi Penjual'),
       ),
       body: CustomScrollView(
         controller: scrollController,
@@ -69,7 +223,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                 Icons.arrow_back,
                 shadows: isShrink && isOnLightMode
                     ? null
-                    : [const Shadow(blurRadius: blurRadius)],
+                    : [const Shadow(blurRadius: 2)],
               ),
               tooltip: 'Kembali',
               color: isShrink && isOnLightMode ? Colors.black : Colors.white,
@@ -77,37 +231,102 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
             foregroundColor:
                 isShrink && isOnLightMode ? Colors.black : Colors.white,
             title: Text(
-              isShrink && isOnLightMode ? widget.produk.nama : 'Detail Produk',
+              isShrink ? widget.produk.nama : 'Detail Produk',
               style: TextStyle(
                 shadows: isShrink && isOnLightMode
                     ? null
-                    : [const Shadow(blurRadius: blurRadius)],
+                    : [const Shadow(blurRadius: 2)],
               ),
             ),
-            // actions: [
-            //   IconButton(
-            //     onPressed: () {},
-            //     icon: Icon(
-            //       Icons.search,
-            //       color: Colors.white,
-            //       shadows: [Shadow(blurRadius: blurRadius)],
-            //     ),
-            //   ),
-            //   SizedBox(width: 5),
-            // ],
+            actions: [
+              Visibility(
+                visible: widget.currentUserIsPemilik,
+                child: IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: const Text('Hapus produk'),
+                          content: const Text(
+                              'Apakah anda yakin ingin menghapus produk ini?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Batal'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                final pengguna = await Pengguna.getById(
+                                    FirebaseAuth.instance.currentUser!.uid);
 
+                                // Show progress indicator
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (_) {
+                                    return const AlertDialog(
+                                      backgroundColor: Colors.transparent,
+                                      elevation: 0,
+                                      content: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  },
+                                );
+
+                                pengguna!.removeProduk(widget.produk).then((_) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Produk berhasil dihapus!'),
+                                    ),
+                                  );
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                              child: const Text(
+                                'Hapus',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  tooltip: 'Hapus produk',
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: false,
-              titlePadding: const EdgeInsets.only(bottom: 16, left: 20),
+              titlePadding: const EdgeInsets.only(left: 20),
               title: isShrink
                   ? null
-                  : Text(
-                      widget.produk.nama,
-                      style: const TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        shadows: [Shadow(blurRadius: 0.5)],
-                      ),
-                      maxLines: 2,
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            widget.produk.nama,
+                            style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              shadows: [Shadow(blurRadius: 2)],
+                            ),
+                            maxLines: 2,
+                          ),
+                        ),
+                        buildFavoritButton(),
+                      ],
                     ),
               background: InkWell(
                 onTap: () {
@@ -137,44 +356,54 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const ListTile(
-                    contentPadding: EdgeInsets.all(0),
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(0),
                     leading: CircleAvatar(
                       foregroundImage: NetworkImage(
-                          'https://lh3.googleusercontent.com/ogw/AOh-ky3NN20jAI3Ftj9lozPTrio3bl99T6W5P7JriaAtLA=s32-c-mo'),
+                          widget.pemilik.urlFotoProfil ?? urlFotoProfilDefault),
                     ),
-                    title: Text('Daffa Ilhami'),
+                    title: Text(widget.pemilik.nama),
+                    subtitle: Text(widget.pemilik.lokasi ?? ''),
                   ),
                   const Divider(),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: [
-                        ActionChip(
-                          label: const Text('Fashion'),
-                          onPressed: () {},
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          side: BorderSide.none,
-                        ),
-                        const SizedBox(width: 8),
-                        ActionChip(
-                          label: const Text('Kuliner'),
-                          onPressed: () {},
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          side: BorderSide.none,
-                        ),
-                        const SizedBox(width: 8),
-                        ActionChip(
-                          label: const Text('Elektronik'),
-                          onPressed: () {},
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          side: BorderSide.none,
-                        ),
-                        const SizedBox(width: 8),
-                      ],
+                      children: () {
+                        if (widget.produk.runtimeType == Barang) {
+                          final barang = widget.produk as Barang;
+
+                          return List.generate(barang.kategori.length, (i) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: ActionChip(
+                                label: Text(barang.kategori[i].name),
+                                onPressed: () {},
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                                side: BorderSide.none,
+                              ),
+                            );
+                          });
+                        } else {
+                          final jasa = widget.produk as Jasa;
+
+                          return List.generate(jasa.kategori.length, (i) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: ActionChip(
+                                label: Text(jasa.kategori[i].name),
+                                onPressed: () {},
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                                side: BorderSide.none,
+                              ),
+                            );
+                          });
+                        }
+                      }(),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -183,8 +412,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: Theme.of(context).colorScheme.primary),
                   ),
-                  const Text(
-                      'lorem kjasdbkas sajd baskjdb askdb lasdn lasd lakbdlas blksa bdlas blasjd blasjdb lasj blsaj b'),
+                  Text(widget.produk.deskripsi),
                   const SizedBox(height: 2000),
                 ],
               ),
