@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marketku/pages/home/pages/pencarian/utils.dart';
+import 'package:marketku/utils.dart';
 
 import 'pages/hasil_pencarian/hasil_pencarian.dart';
 

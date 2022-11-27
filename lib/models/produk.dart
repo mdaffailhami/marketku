@@ -1,4 +1,4 @@
-import 'package:marketku/pages/home/pages/pencarian/utils.dart';
+import 'package:marketku/utils.dart';
 
 import 'rupiah.dart';
 
