@@ -1,3 +1,5 @@
+import 'package:marketku/pages/home/pages/pencarian/utils.dart';
+
 import 'rupiah.dart';
 
 enum JenisProduk { barang, jasa }
@@ -11,7 +13,8 @@ abstract class Produk {
     required this.deskripsi,
     required this.harga,
     required this.lokasi,
-  }) : id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
+  })  : id = id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+        kataKunci = splitKataKunci(nama, uppercase: true);
 
   String id;
   String idPengguna;
@@ -20,6 +23,7 @@ abstract class Produk {
   String deskripsi;
   Rupiah harga;
   String lokasi;
+  List<String> kataKunci;
 
   Map<String, dynamic> toJson() {
     return {
@@ -30,6 +34,7 @@ abstract class Produk {
       'deskripsi': deskripsi,
       'harga': harga.nilai,
       'lokasi': lokasi,
+      'kata_kunci': kataKunci,
     };
   }
 }

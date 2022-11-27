@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marketku/pages/home/pages/pencarian/utils.dart';
 import 'package:marketku/pages/sign_in/sign_in.dart';
 
 import '../../pencarian.dart';
@@ -12,7 +13,7 @@ class MyHasilPencarianPage extends StatefulWidget {
     required this.kataKunci,
   });
 
-  final String kataKunci;
+  final List<String> kataKunci;
 
   @override
   State<MyHasilPencarianPage> createState() => _MyHasilPencarianPageState();
@@ -39,7 +40,7 @@ class _MyHasilPencarianPageState extends State<MyHasilPencarianPage>
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => MyPencarianPage(
-          kataKunciInitial: widget.kataKunci,
+          initial: joinKataKunci(widget.kataKunci),
         ),
       ),
     );
@@ -75,10 +76,10 @@ class _MyHasilPencarianPageState extends State<MyHasilPencarianPage>
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           left: NavigationToolbar.kMiddleSpacing),
                       child: Text(
-                        widget.kataKunci,
+                        joinKataKunci(widget.kataKunci),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
@@ -113,7 +114,7 @@ class _MyHasilPencarianPageState extends State<MyHasilPencarianPage>
             MyBarangPage(
               kataKunci: widget.kataKunci,
             ),
-            MyJasaPage(),
+            const MyJasaPage(),
           ],
         ),
       ),

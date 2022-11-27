@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:marketku/pages/home/pages/pencarian/utils.dart';
 
 import 'produk.dart';
 import 'rupiah.dart';
@@ -52,7 +53,7 @@ class Barang extends Produk {
 
   static Future<List<Barang>> get({
     KategoriBarang? kategori,
-    String? kataKunci,
+    List<String>? kataKunci,
     bool tampilkanBarangSaya = false,
   }) async {
     final idPengguna = FirebaseAuth.instance.currentUser!.uid;
@@ -84,37 +85,40 @@ class Barang extends Produk {
         }
       }
     } else {
+      kataKunci = splitKataKunci(joinKataKunci(kataKunci), uppercase: true);
+
       if (kategori == null) {
         if (tampilkanBarangSaya) {
           docs = (await collection
-                  .where('nama', isGreaterThanOrEqualTo: kataKunci)
-                  .where('nama', isLessThanOrEqualTo: '$kataKunci~')
+                  .where('kata_kunci', arrayContainsAny: kataKunci)
                   .get())
               .docs;
         } else {
           docs = (await collection
                   .where('id_pengguna', isNotEqualTo: idPengguna)
-                  .where('nama', isGreaterThanOrEqualTo: kataKunci)
-                  .where('nama', isLessThanOrEqualTo: '$kataKunci~')
+                  .where('kata_kunci', arrayContainsAny: kataKunci)
                   .get())
               .docs;
         }
       } else {
         if (tampilkanBarangSaya) {
           docs = (await Barang.collection
-                  .where('nama', isGreaterThanOrEqualTo: kataKunci)
-                  .where('nama', isLessThanOrEqualTo: '$kataKunci~')
-                  .where('kategori', arrayContains: kategori.name)
+                  .where('kata_kunci', arrayContainsAny: kataKunci)
                   .get())
-              .docs;
+              .docs
+              .where((element) =>
+                  (element['kategori'] as List).contains(kategori.name))
+              .toList();
         } else {
           docs = (await Barang.collection
                   .where('id_pengguna', isNotEqualTo: idPengguna)
-                  .where('nama', isGreaterThanOrEqualTo: kataKunci)
-                  .where('nama', isLessThanOrEqualTo: '$kataKunci~')
+                  .where('kata_kunci', arrayContainsAny: kataKunci)
                   .where('kategori', arrayContains: kategori.name)
                   .get())
-              .docs;
+              .docs
+              .where((element) =>
+                  (element['kategori'] as List).contains(kategori.name))
+              .toList();
         }
       }
     }

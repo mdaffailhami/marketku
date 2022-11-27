@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:marketku/models/pengguna.dart';
-import 'package:marketku/widgets/banner.dart';
 import 'package:marketku/models/barang.dart';
 import 'package:marketku/widgets/choice_chip.dart';
 import 'package:marketku/widgets/produk_card.dart';
@@ -8,7 +7,7 @@ import 'package:marketku/widgets/produk_card.dart';
 class MyBarangPage extends StatefulWidget {
   const MyBarangPage({super.key, required this.kataKunci});
 
-  final String kataKunci;
+  final List<String> kataKunci;
 
   @override
   State<MyBarangPage> createState() => _MyBarangPageState();
@@ -72,7 +71,12 @@ class _MyBarangPageState extends State<MyBarangPage> {
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return const Center(
-                            child: Text('Gagal memuat produk!'));
+                            child: Text(
+                          'Kata kunci tidak boleh lebih dari 10!',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ));
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {

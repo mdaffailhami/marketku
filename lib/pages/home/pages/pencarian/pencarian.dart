@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:marketku/pages/home/pages/pencarian/utils.dart';
 
 import 'pages/hasil_pencarian/hasil_pencarian.dart';
 
 class MyPencarianPage extends StatefulWidget {
   const MyPencarianPage({
     super.key,
-    this.kataKunciInitial,
+    this.initial,
   });
 
-  final String? kataKunciInitial;
+  final String? initial;
 
   @override
   State<MyPencarianPage> createState() => _MyPencarianPageState();
@@ -20,13 +21,14 @@ class _MyPencarianPageState extends State<MyPencarianPage> {
   @override
   void initState() {
     super.initState();
-    searchController = TextEditingController(text: widget.kataKunciInitial);
+    searchController = TextEditingController(text: widget.initial);
   }
 
   void cariProduk({required String kataKunci}) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => MyHasilPencarianPage(kataKunci: kataKunci),
+        builder: (_) =>
+            MyHasilPencarianPage(kataKunci: splitKataKunci(kataKunci)),
       ),
     );
   }
@@ -77,7 +79,7 @@ class _MyPencarianPageState extends State<MyPencarianPage> {
           builder: (_) {
             List<Widget> children = [];
 
-            final keywords = searchController.text.split(' ');
+            final keywords = splitKataKunci(searchController.text);
 
             for (int i = 0; i < keywords.length; i++) {
               var text = '';
