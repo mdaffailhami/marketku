@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'barang.dart';
+import 'barang_favorit.dart';
 import 'jasa.dart';
+import 'jasa_favorit.dart';
 import 'produk.dart';
 
 class Pengguna {
@@ -53,6 +55,16 @@ class Pengguna {
     } else if (data.runtimeType == Jasa) {
       data = data as Jasa;
       await Jasa.collection.doc(data.id).set(data.toJson());
+    }
+  }
+
+  Future<void> removeProduk(Produk produk) async {
+    if (produk.runtimeType == Barang) {
+      final barang = produk as Barang;
+      await Barang.collection.doc(barang.id).delete();
+    } else {
+      final jasa = produk as Jasa;
+      await Jasa.collection.doc(jasa.id).delete();
     }
   }
 
@@ -114,6 +126,50 @@ class Pengguna {
     }
 
     return result;
+  }
+
+  Future<void> addBarangFavorit(Barang barang) async {
+    final barangFavorit = BarangFavorit(idPengguna: id, idBarang: barang.id);
+
+    await BarangFavorit.collection.doc(barangFavorit.id).set({
+      'id': barangFavorit.id,
+      'id_pengguna': barangFavorit.idPengguna,
+      'id_barang': barangFavorit.idBarang,
+    });
+  }
+
+  Future<void> addJasaFavorit(Jasa jasa) async {
+    final jasaFavorit = JasaFavorit(idPengguna: id, idJasa: jasa.id);
+
+    await JasaFavorit.collection.doc(jasaFavorit.id).set({
+      'id': jasaFavorit.id,
+      'id_pengguna': jasaFavorit.idPengguna,
+      'id_jasa': jasaFavorit.idJasa,
+    });
+  }
+
+  Future<void> removeBarangFavorit(Barang barang) async {
+    final docs = (await BarangFavorit.collection
+            .where('id_pengguna', isEqualTo: id)
+            .where('id_barang', isEqualTo: barang.id)
+            .get())
+        .docs;
+
+    for (var doc in docs) {
+      doc.reference.delete();
+    }
+  }
+
+  Future<void> removeJasaFavorit(Jasa jasa) async {
+    final docs = (await JasaFavorit.collection
+            .where('id_pengguna', isEqualTo: id)
+            .where('id_jasa', isEqualTo: jasa.id)
+            .get())
+        .docs;
+
+    for (var doc in docs) {
+      doc.reference.delete();
+    }
   }
 
   Map<String, dynamic> toJson() {

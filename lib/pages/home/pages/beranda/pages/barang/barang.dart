@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/widgets/banner.dart';
 import 'package:marketku/models/barang.dart';
 import 'package:marketku/widgets/choice_chip.dart';
@@ -94,8 +95,26 @@ class _MyBarangPageState extends State<MyBarangPage> {
                         children: List.generate(
                           barang!.length,
                           (int i) {
-                            return MyProdukCard(
-                              produk: barang[i],
+                            return FutureBuilder(
+                              future: Pengguna.getById(barang[i].idPengguna),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Center(
+                                      child: Text('Gagal memuat produk!'));
+                                }
+
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const SizedBox.shrink();
+                                }
+
+                                final pemilik = snapshot.data!;
+
+                                return MyProdukCard(
+                                  produk: barang[i],
+                                  pemilik: pemilik,
+                                );
+                              },
                             );
                           },
                         ),

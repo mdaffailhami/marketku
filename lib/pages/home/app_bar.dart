@@ -118,7 +118,7 @@ class MyAppBar extends StatelessWidget {
                                   }
 
                                   return ListTile(
-                                    contentPadding: EdgeInsets.all(0),
+                                    contentPadding: const EdgeInsets.all(0),
                                     leading: CircleAvatar(
                                       radius: 18,
                                       foregroundImage: NetworkImage(
