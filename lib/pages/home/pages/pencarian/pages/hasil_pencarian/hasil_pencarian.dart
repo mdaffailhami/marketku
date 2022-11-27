@@ -111,10 +111,8 @@ class _MyHasilPencarianPageState extends State<MyHasilPencarianPage>
         body: TabBarView(
           controller: tabController,
           children: [
-            MyBarangPage(
-              kataKunci: widget.kataKunci,
-            ),
-            const MyJasaPage(),
+            MyBarangPage(kataKunci: widget.kataKunci),
+            MyJasaPage(kataKunci: widget.kataKunci),
           ],
         ),
       ),
