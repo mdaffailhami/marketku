@@ -148,6 +148,59 @@ class Pengguna {
     });
   }
 
+  static Future<List<Barang>> getBarangFavorit(
+      {KategoriBarang? kategori}) async {
+    final docsBarangFavorit = (await BarangFavorit.collection
+            .where(
+              'id_pengguna',
+              isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+            )
+            .get())
+        .docs;
+
+    docsBarangFavorit.sort((a, b) =>
+        a.data()['id'].toString().compareTo(b.data()['id'].toString()));
+
+    List<String> idBarang = [];
+
+    for (var doc in docsBarangFavorit) {
+      idBarang.add(doc.data()['id_barang']);
+    }
+
+    const limit = 10;
+    List<Barang> result = [];
+
+    for (int i = 0; i < (idBarang.length / limit).ceil(); i++) {
+      final limitedIdBarang = List.from(idBarang);
+
+      limitedIdBarang.removeRange(0, i * limit);
+      if (limitedIdBarang.length > limit) {
+        limitedIdBarang.removeRange(limit, limitedIdBarang.length);
+      }
+
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs;
+
+      if (kategori == null) {
+        docs = (await Barang.collection
+                .where('id', whereIn: limitedIdBarang)
+                .get())
+            .docs;
+      } else {
+        docs = (await Barang.collection
+                .where('id', whereIn: limitedIdBarang)
+                .where('kategori', arrayContains: kategori.name)
+                .get())
+            .docs;
+      }
+
+      for (var doc in docs) {
+        result.add(Barang.fromJson(doc.data()));
+      }
+    }
+
+    return result;
+  }
+
   Future<void> removeBarangFavorit(Barang barang) async {
     final docs = (await BarangFavorit.collection
             .where('id_pengguna', isEqualTo: id)
