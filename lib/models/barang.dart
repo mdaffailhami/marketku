@@ -50,22 +50,73 @@ class Barang extends Produk {
 
   List<KategoriBarang> kategori;
 
-  static Future<List<Barang>> get({KategoriBarang? kategori}) async {
+  static Future<List<Barang>> get({
+    KategoriBarang? kategori,
+    String? kataKunci,
+    bool tampilkanBarangSaya = false,
+  }) async {
     final idPengguna = FirebaseAuth.instance.currentUser!.uid;
 
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs;
-    if (kategori == null) {
-      docs = (await FirebaseFirestore.instance
-              .collection('barang')
-              .where('id_pengguna', isNotEqualTo: idPengguna)
-              .get())
-          .docs;
+
+    if (kataKunci == null) {
+      if (kategori == null) {
+        if (tampilkanBarangSaya) {
+          docs = (await collection.get()).docs;
+        } else {
+          docs = (await collection
+                  .where('id_pengguna', isNotEqualTo: idPengguna)
+                  .get())
+              .docs;
+        }
+      } else {
+        if (tampilkanBarangSaya) {
+          docs = (await Barang.collection
+                  .where('kategori', arrayContains: kategori.name)
+                  .get())
+              .docs;
+        } else {
+          docs = (await Barang.collection
+                  .where('id_pengguna', isNotEqualTo: idPengguna)
+                  .where('kategori', arrayContains: kategori.name)
+                  .get())
+              .docs;
+        }
+      }
     } else {
-      docs = (await Barang.collection
-              .where('id_pengguna', isNotEqualTo: idPengguna)
-              .where('kategori', arrayContains: kategori.name)
-              .get())
-          .docs;
+      if (kategori == null) {
+        if (tampilkanBarangSaya) {
+          docs = (await collection
+                  .where('nama', isGreaterThanOrEqualTo: kataKunci)
+                  .where('nama', isLessThanOrEqualTo: '$kataKunci~')
+                  .get())
+              .docs;
+        } else {
+          docs = (await collection
+                  .where('id_pengguna', isNotEqualTo: idPengguna)
+                  .where('nama', isGreaterThanOrEqualTo: kataKunci)
+                  .where('nama', isLessThanOrEqualTo: '$kataKunci~')
+                  .get())
+              .docs;
+        }
+      } else {
+        if (tampilkanBarangSaya) {
+          docs = (await Barang.collection
+                  .where('nama', isGreaterThanOrEqualTo: kataKunci)
+                  .where('nama', isLessThanOrEqualTo: '$kataKunci~')
+                  .where('kategori', arrayContains: kategori.name)
+                  .get())
+              .docs;
+        } else {
+          docs = (await Barang.collection
+                  .where('id_pengguna', isNotEqualTo: idPengguna)
+                  .where('nama', isGreaterThanOrEqualTo: kataKunci)
+                  .where('nama', isLessThanOrEqualTo: '$kataKunci~')
+                  .where('kategori', arrayContains: kategori.name)
+                  .get())
+              .docs;
+        }
+      }
     }
 
     List<Barang> result = [];
