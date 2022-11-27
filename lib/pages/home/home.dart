@@ -7,7 +7,7 @@ import 'nav_bar.dart';
 import 'pages/beranda/beranda.dart';
 import 'pages/marketku/tambah_produk_button.dart';
 import 'pages/marketku/marketku.dart';
-import 'pages/pesan/pesan.dart';
+import 'pages/favorit/favorit.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -55,20 +55,16 @@ class _MyHomePageState extends State<MyHomePage>
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             MyAppBar(
-              showTabBar: currentPageIndex != 2,
+              showTabBar: true,
               tabController: tabController,
-              searchBarHint: currentPageIndex == 2
-                  ? 'Cari Pengguna'
-                  : 'Cari Barang atau Jasa',
+              searchBarHint: 'Cari Barang atau Jasa',
             ),
           ];
         },
         body: [
-          MyBerandaPage(
-            tabController: tabController,
-          ),
+          MyBerandaPage(tabController: tabController),
           MyMarketKuPage(tabController: tabController),
-          const MyPesanPage(),
+          MyFavoritPage(tabController: tabController),
         ][currentPageIndex],
       ),
     );
