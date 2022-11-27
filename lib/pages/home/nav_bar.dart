@@ -40,9 +40,9 @@ class MyNavBar extends StatelessWidget {
             tooltip: '',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.message),
-            icon: Icon(Icons.message_outlined),
-            label: 'Pesan',
+            selectedIcon: Icon(Icons.bookmark),
+            icon: Icon(Icons.bookmark_outline),
+            label: 'Favorit',
             tooltip: '',
           ),
         ],
