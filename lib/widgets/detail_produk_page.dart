@@ -283,7 +283,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                   },
                   tooltip: 'Hapus produk',
                   icon: const Icon(
-                    Icons.delete_outline,
+                    Icons.delete,
                     color: Colors.red,
                   ),
                 ),
