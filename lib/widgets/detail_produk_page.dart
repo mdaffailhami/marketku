@@ -213,8 +213,12 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
             ? Theme.of(context).colorScheme.onPrimaryContainer
             : Theme.of(context).colorScheme.onPrimary,
         onPressed: () async {
-          final url =
-              Uri.parse('https://wa.me/62${widget.pemilik.nomorWhatsApp}');
+          final initialMessage = Uri.encodeComponent(
+            '*PRODUK*\nNama: ${widget.produk.nama}\nHarga: ${widget.produk.harga}\nFoto: ${widget.produk.urlFoto}\n\nPesan: ',
+          );
+
+          final url = Uri.parse(
+              'https://wa.me/62${widget.pemilik.nomorWhatsApp}?text=$initialMessage');
 
           if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
             ScaffoldMessenger.of(context).showSnackBar(
