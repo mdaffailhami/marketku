@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:marketku/pages/home/home.dart';
+import 'package:marketku/pages/sign_in/sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
@@ -109,22 +110,25 @@ class MyMaterialApp extends StatelessWidget {
               darkTheme: darkTheme,
               home: MySplashScreen(
                 duration: const Duration(seconds: 2),
-                home: FutureBuilder(
-                    future: Pengguna.getById(
-                        FirebaseAuth.instance.currentUser!.uid),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Scaffold(
-                          body: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
+                home: FirebaseAuth.instance.currentUser == null
+                    ? const MySignInPage()
+                    : FutureBuilder(
+                        future: Pengguna.getById(
+                            FirebaseAuth.instance.currentUser!.uid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Scaffold(
+                              body: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
 
-                      MyApp.pengguna = snapshot.data;
+                          MyApp.pengguna = snapshot.data;
 
-                      return const MyHomePage();
-                    }),
+                          return const MyHomePage();
+                        }),
               ),
             );
           },
