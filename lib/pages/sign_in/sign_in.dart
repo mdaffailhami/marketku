@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marketku/main.dart';
 import 'package:marketku/models/akun.dart';
-import 'package:marketku/pages/home/home.dart';
 import 'package:marketku/pages/sign_up/sign_up.dart';
 import 'package:marketku/widgets/marketku_logotype.dart';
 import 'package:marketku/widgets/text_form_field.dart';

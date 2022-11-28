@@ -139,7 +139,7 @@ class MyAppBar extends StatelessWidget {
                                       TextButton(
                                         onPressed: () =>
                                             Navigator.of(context).pop(),
-                                        child: const Text('Selesai'),
+                                        child: const Text('Batal'),
                                       )
                                     ],
                                     content: Column(
@@ -164,6 +164,7 @@ class MyAppBar extends StatelessWidget {
                                                   'theme_mode', value!.name);
 
                                               MyApp.themeMode.value = value;
+                                              Navigator.of(context).pop();
                                             },
                                             title: Builder(builder: (_) {
                                               if (themeMode ==
