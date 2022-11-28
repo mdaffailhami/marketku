@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:marketku/utils.dart';
 
 import 'produk.dart';
 import 'rupiah.dart';
@@ -50,22 +51,76 @@ class Jasa extends Produk {
 
   List<KategoriJasa> kategori;
 
-  static Future<List<Jasa>> get({KategoriJasa? kategori}) async {
+  static Future<List<Jasa>> get({
+    KategoriJasa? kategori,
+    List<String>? kataKunci,
+    bool tampilkanJasaSaya = false,
+  }) async {
     final idPengguna = FirebaseAuth.instance.currentUser!.uid;
 
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs;
-    if (kategori == null) {
-      docs = (await FirebaseFirestore.instance
-              .collection('jasa')
-              .where('id_pengguna', isNotEqualTo: idPengguna)
-              .get())
-          .docs;
+
+    if (kataKunci == null) {
+      if (kategori == null) {
+        if (tampilkanJasaSaya) {
+          docs = (await collection.get()).docs;
+        } else {
+          docs = (await collection
+                  .where('id_pengguna', isNotEqualTo: idPengguna)
+                  .get())
+              .docs;
+        }
+      } else {
+        if (tampilkanJasaSaya) {
+          docs = (await Jasa.collection
+                  .where('kategori', arrayContains: kategori.name)
+                  .get())
+              .docs;
+        } else {
+          docs = (await Jasa.collection
+                  .where('id_pengguna', isNotEqualTo: idPengguna)
+                  .where('kategori', arrayContains: kategori.name)
+                  .get())
+              .docs;
+        }
+      }
     } else {
-      docs = (await Jasa.collection
-              .where('id_pengguna', isNotEqualTo: idPengguna)
-              .where('kategori', arrayContains: kategori.name)
-              .get())
-          .docs;
+      kataKunci = splitKataKunci(joinKataKunci(kataKunci), uppercase: true);
+
+      if (kategori == null) {
+        if (tampilkanJasaSaya) {
+          docs = (await collection
+                  .where('kata_kunci', arrayContainsAny: kataKunci)
+                  .get())
+              .docs;
+        } else {
+          docs = (await collection
+                  .where('id_pengguna', isNotEqualTo: idPengguna)
+                  .where('kata_kunci', arrayContainsAny: kataKunci)
+                  .get())
+              .docs;
+        }
+      } else {
+        if (tampilkanJasaSaya) {
+          docs = (await Jasa.collection
+                  .where('kata_kunci', arrayContainsAny: kataKunci)
+                  .get())
+              .docs
+              .where((element) =>
+                  (element['kategori'] as List).contains(kategori.name))
+              .toList();
+        } else {
+          docs = (await Jasa.collection
+                  .where('id_pengguna', isNotEqualTo: idPengguna)
+                  .where('kata_kunci', arrayContainsAny: kataKunci)
+                  .where('kategori', arrayContains: kategori.name)
+                  .get())
+              .docs
+              .where((element) =>
+                  (element['kategori'] as List).contains(kategori.name))
+              .toList();
+        }
+      }
     }
 
     List<Jasa> result = [];
