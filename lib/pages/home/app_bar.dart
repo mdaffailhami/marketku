@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart' as lol;
 import 'package:marketku/main.dart';
 import 'package:marketku/pages/home/home.dart';
 import 'package:marketku/models/pengguna.dart';
@@ -111,33 +112,36 @@ class MyAppBar extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                PopupMenuItem(onTap: () {
-                                  Future.delayed(Duration.zero).then((_) {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (_) => const MyProfilPage(),
-                                      ),
-                                    );
-                                  });
-                                }, child: () {
-                                  if (!snapshot.hasData) {
-                                    return const LinearProgressIndicator();
-                                  }
+                                PopupMenuItem(
+                                  onTap: () {
+                                    Future.delayed(Duration.zero).then((_) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (_) => const MyProfilPage(),
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  child: () {
+                                    if (!snapshot.hasData) {
+                                      return const LinearProgressIndicator();
+                                    }
 
-                                  return ListTile(
-                                    contentPadding: const EdgeInsets.all(0),
-                                    leading: CircleAvatar(
-                                      radius: 18,
-                                      foregroundImage: NetworkImage(
-                                        pengguna.urlFotoProfil ??
-                                            urlFotoProfilDefault,
+                                    return ListTile(
+                                      contentPadding: const EdgeInsets.all(0),
+                                      leading: CircleAvatar(
+                                        radius: 18,
+                                        foregroundImage: NetworkImage(
+                                          pengguna.urlFotoProfil ??
+                                              urlFotoProfilDefault,
+                                        ),
                                       ),
-                                    ),
-                                    minLeadingWidth: 40 - 5,
-                                    title: Text(pengguna.nama),
-                                    subtitle: Text(pengguna.alamatEmail),
-                                  );
-                                }()),
+                                      minLeadingWidth: 40 - 5,
+                                      title: Text(pengguna.nama),
+                                      subtitle: Text(pengguna.alamatEmail),
+                                    );
+                                  }(),
+                                ),
                                 const Divider(),
                                 PopupMenuItem(
                                   onTap: () async {
@@ -234,6 +238,25 @@ class MyAppBar extends StatelessWidget {
                                 ),
                                 PopupMenuItem(
                                   onTap: () async {
+                                    await Future.delayed(
+                                      const Duration(seconds: 0),
+                                    );
+
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            const MyColorPicker());
+                                  },
+                                  child: Row(
+                                    children: const [
+                                      Icon(Icons.color_lens_outlined),
+                                      SizedBox(width: 8),
+                                      Text('Warna Aplikasi'),
+                                    ],
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  onTap: () async {
                                     await FirebaseAuth.instance.signOut();
 
                                     Navigator.of(context).pushReplacement(
@@ -288,6 +311,56 @@ class MyAppBar extends StatelessWidget {
               ],
             )
           : null,
+    );
+  }
+}
+
+class MyColorPicker extends StatefulWidget {
+  const MyColorPicker({Key? key}) : super(key: key);
+
+  @override
+  State<MyColorPicker> createState() => _MyColorPickerState();
+}
+
+class _MyColorPickerState extends State<MyColorPicker> {
+  var pickedColor = MyApp.seedColor.value;
+
+  @override
+  Widget build(BuildContext context) {
+    // lol.SlidePicker()
+    return AlertDialog(
+      title: const Text('Pilih warna aplikasi'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Batal'),
+        ),
+        TextButton(
+          onPressed: () {
+            MyApp.prefs!
+                .setString('seed_color', pickedColor.value.toRadixString(16));
+
+            MyApp.seedColor.value = pickedColor;
+
+            Navigator.of(context).pop();
+          },
+          child: const Text('Pilih'),
+        ),
+      ],
+      // contentPadding: EdgeInsets.all(0),
+      content: SingleChildScrollView(
+        child: lol.ColorPicker(
+          enableAlpha: false,
+          hexInputBar: true,
+          pickerColor: MyApp.seedColor.value,
+          labelTypes: const [],
+          onColorChanged: (value) {
+            pickedColor = value;
+          },
+        ),
+      ),
     );
   }
 }
