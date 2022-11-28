@@ -10,7 +10,9 @@ import 'pages/marketku/marketku.dart';
 import 'pages/favorit/favorit.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, this.initialPageIndex = 0});
+
+  final int initialPageIndex;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -19,12 +21,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
-  int currentPageIndex = 0;
+  late int currentPageIndex;
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
     super.initState();
+
+    tabController = TabController(length: 2, vsync: this);
+    currentPageIndex = widget.initialPageIndex;
   }
 
   @override

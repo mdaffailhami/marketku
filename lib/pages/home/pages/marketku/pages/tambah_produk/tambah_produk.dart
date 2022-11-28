@@ -11,6 +11,7 @@ import 'package:marketku/models/jasa.dart';
 import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/models/produk.dart';
 import 'package:marketku/models/rupiah.dart';
+import 'package:marketku/pages/home/home.dart';
 import 'package:marketku/widgets/choice_chip.dart';
 import 'package:marketku/widgets/text_form_field.dart';
 
@@ -102,6 +103,13 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
     showSnackBar('Produk berhasil ditambahkan!');
     Navigator.of(context).pop();
     Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => const MyHomePage(
+          initialPageIndex: 1,
+        ),
+      ),
+    );
   }
 
   void pilihFoto() async {
