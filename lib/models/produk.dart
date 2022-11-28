@@ -12,7 +12,6 @@ abstract class Produk {
     required this.nama,
     required this.deskripsi,
     required this.harga,
-    required this.lokasi,
   })  : id = id ?? DateTime.now().millisecondsSinceEpoch.toString(),
         kataKunci = splitKataKunci(nama, uppercase: true);
 
@@ -22,7 +21,6 @@ abstract class Produk {
   String nama;
   String deskripsi;
   Rupiah harga;
-  String lokasi;
   List<String> kataKunci;
 
   Map<String, dynamic> toJson() {
@@ -33,7 +31,6 @@ abstract class Produk {
       'nama': nama,
       'deskripsi': deskripsi,
       'harga': harga.nilai,
-      'lokasi': lokasi,
       'kata_kunci': kataKunci,
     };
   }

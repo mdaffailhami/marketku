@@ -15,7 +15,6 @@ class Barang extends Produk {
     required String nama,
     required String deskripsi,
     required Rupiah harga,
-    required String lokasi,
     required this.kategori,
   }) : super(
           id: id,
@@ -24,7 +23,6 @@ class Barang extends Produk {
           nama: nama,
           deskripsi: deskripsi,
           harga: harga,
-          lokasi: lokasi,
         );
 
   factory Barang.fromJson(Map<String, dynamic> data) {
@@ -42,7 +40,6 @@ class Barang extends Produk {
       nama: data['nama'],
       deskripsi: data['deskripsi'],
       harga: Rupiah(data['harga']),
-      lokasi: data['lokasi'],
       kategori: kategori,
     );
   }

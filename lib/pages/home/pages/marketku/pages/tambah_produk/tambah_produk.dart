@@ -29,7 +29,6 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
   String nama = '';
   String deskripsi = '';
   Rupiah harga = Rupiah(0);
-  String lokasi = '';
   JenisProduk jenisProduk = JenisProduk.barang;
   List<KategoriBarang> kategoriBarang = [];
   List<KategoriJasa> kategoriJasa = [];
@@ -84,7 +83,6 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
           nama: nama,
           deskripsi: deskripsi,
           harga: harga,
-          lokasi: lokasi,
           kategori: kategoriBarang,
         ),
       );
@@ -96,7 +94,6 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
           nama: nama,
           deskripsi: deskripsi,
           harga: harga,
-          lokasi: lokasi,
           kategori: kategoriJasa,
         ),
       );
@@ -232,12 +229,6 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
                 labelText: 'Harga',
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
-              ),
-              MyTextFormField(
-                onChanged: (String value) => lokasi = value,
-                labelText: 'Lokasi',
-                keyboardType: TextInputType.streetAddress,
-                textInputAction: TextInputAction.done,
               ),
               Text('Jenis', style: Theme.of(context).textTheme.titleLarge),
               Row(
