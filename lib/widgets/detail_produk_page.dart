@@ -432,7 +432,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                         color: Theme.of(context).colorScheme.primary),
                   ),
                   Text(widget.produk.deskripsi),
-                  const SizedBox(height: 2000),
+                  const SizedBox(height: 1500),
                 ],
               ),
             ),
