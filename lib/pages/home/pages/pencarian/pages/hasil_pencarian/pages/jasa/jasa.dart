@@ -88,6 +88,13 @@ class _MyJasaPageState extends State<MyJasaPage> {
 
                       final List<Jasa>? jasa = snapshot.data;
 
+                      if (jasa!.isEmpty) {
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text('Produk tidak ditemukan!'),
+                        );
+                      }
+
                       return Wrap(
                         children: List.generate(
                           jasa!.length,

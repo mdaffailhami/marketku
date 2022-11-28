@@ -88,6 +88,13 @@ class _MyBarangPageState extends State<MyBarangPage> {
 
                       final List<Barang>? barang = snapshot.data;
 
+                      if (barang!.isEmpty) {
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text('Produk tidak ditemukan!'),
+                        );
+                      }
+
                       return Wrap(
                         children: List.generate(
                           barang!.length,
