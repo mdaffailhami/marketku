@@ -30,7 +30,7 @@ class _MyBarangPageState extends State<MyBarangPage> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Barang yang mungkin anda suka',
+              'Barang untuk anda',
               style: Theme.of(context)
                   .textTheme
                   .headline6

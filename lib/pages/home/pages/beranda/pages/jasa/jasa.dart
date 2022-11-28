@@ -30,7 +30,7 @@ class _MyJasaPageState extends State<MyJasaPage> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Jasa yang mungkin anda cari',
+              'Jasa untuk anda',
               style: Theme.of(context)
                   .textTheme
                   .headline6
