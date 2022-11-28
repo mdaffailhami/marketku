@@ -23,8 +23,6 @@ class MyAppBar extends StatelessWidget {
   final String urlFotoProfilDefault =
       'https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=170x170&k=20&c=pVkxcoiVUlD0uOzasLU41qdrAQpT1B3vBfKSJQWuNq4=';
 
-  void gantiModeTema() {}
-
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(

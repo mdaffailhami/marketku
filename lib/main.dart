@@ -108,7 +108,7 @@ class MyMaterialApp extends StatelessWidget {
               theme: theme,
               darkTheme: darkTheme,
               home: MySplashScreen(
-                duration: Duration(seconds: 2),
+                duration: const Duration(seconds: 2),
                 home: FutureBuilder(
                     future: Pengguna.getById(
                         FirebaseAuth.instance.currentUser!.uid),
@@ -123,7 +123,7 @@ class MyMaterialApp extends StatelessWidget {
 
                       MyApp.pengguna = snapshot.data;
 
-                      return MyHomePage();
+                      return const MyHomePage();
                     }),
               ),
             );

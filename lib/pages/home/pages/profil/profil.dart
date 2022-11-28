@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -65,7 +64,7 @@ class _MyProfilPageState extends State<MyProfilPage> {
       }
     }
 
-    await Pengguna.update(
+    Pengguna.update(
       Pengguna(
         id: pengguna!.id,
         nama: nama ?? pengguna.nama,
@@ -74,12 +73,14 @@ class _MyProfilPageState extends State<MyProfilPage> {
         lokasi: lokasi ?? pengguna.lokasi,
         nomorWhatsApp: nomorWhatsApp ?? pengguna.nomorWhatsApp,
       ),
-    );
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Profil tersimpan!')));
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    ).then((value) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Profil tersimpan!')));
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const MyMaterialApp()));
+    });
   }
 
   void pilihFoto() async {
