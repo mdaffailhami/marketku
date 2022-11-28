@@ -5,7 +5,15 @@ import 'package:marketku/utils.dart';
 import 'produk.dart';
 import 'rupiah.dart';
 
-enum KategoriBarang { Kuliner, Fashion, Elektronik }
+enum KategoriBarang {
+  Kuliner,
+  Elektronik,
+  Fesyen,
+  Furnitur,
+  Dapur,
+  Kebersihan,
+  Konstruksi,
+}
 
 class Barang extends Produk {
   Barang({

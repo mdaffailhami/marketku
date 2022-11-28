@@ -5,7 +5,15 @@ import 'package:marketku/utils.dart';
 import 'produk.dart';
 import 'rupiah.dart';
 
-enum KategoriJasa { Kebersihan, Penampilan }
+enum KategoriJasa {
+  Pendidikan,
+  Kesehatan,
+  Transportasi,
+  Komunikasi,
+  Konstruksi,
+  Kecantikan,
+  Bisnis,
+}
 
 class Jasa extends Produk {
   Jasa({
