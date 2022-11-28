@@ -86,9 +86,17 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
               return IconButton(
                 tooltip: 'Hapus dari favorit',
                 onPressed: () async {
-                  await currentUser.removeBarangFavorit(barang);
+                  currentUser.removeBarangFavorit(barang).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produk berhasil dihapus dari daftar favorit',
+                        ),
+                      ),
+                    );
 
-                  setState(() {});
+                    setState(() {});
+                  });
                 },
                 icon: const Icon(
                   Icons.bookmark,
@@ -100,9 +108,17 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
               return IconButton(
                 tooltip: 'Tambahkan ke favorit',
                 onPressed: () async {
-                  await currentUser.addBarangFavorit(barang);
+                  currentUser.addBarangFavorit(barang).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produk berhasil ditambahkan ke daftar favorit',
+                        ),
+                      ),
+                    );
 
-                  setState(() {});
+                    setState(() {});
+                  });
                 },
                 icon: const Icon(
                   Icons.bookmark_outline,
@@ -134,9 +150,17 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
               return IconButton(
                 tooltip: 'Hapus dari favorit',
                 onPressed: () async {
-                  await currentUser.removeJasaFavorit(jasa);
+                  currentUser.removeJasaFavorit(jasa).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produk berhasil dihapus dari daftar favorit',
+                        ),
+                      ),
+                    );
 
-                  setState(() {});
+                    setState(() {});
+                  });
                 },
                 icon: const Icon(
                   Icons.bookmark,
@@ -148,9 +172,17 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
               return IconButton(
                 tooltip: 'Tambahkan ke favorit',
                 onPressed: () async {
-                  await currentUser.addJasaFavorit(jasa);
+                  currentUser.addJasaFavorit(jasa).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produk berhasil ditambahkan ke daftar favorit',
+                        ),
+                      ),
+                    );
 
-                  setState(() {});
+                    setState(() {});
+                  });
                 },
                 icon: const Icon(
                   Icons.bookmark_outline,
