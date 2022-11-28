@@ -67,226 +67,202 @@ class MyAppBar extends StatelessWidget {
                     ),
               ),
             ),
-            FutureBuilder(
-                future:
-                    Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const SizedBox.shrink();
-                  }
-
-                  final Pengguna pengguna = snapshot.data as Pengguna;
-
-                  return IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
+            IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(4, 8, 4, 4),
+                            child: Stack(
+                              alignment: Alignment.centerLeft,
                               children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(4, 8, 4, 4),
-                                  child: Stack(
-                                    alignment: Alignment.centerLeft,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        icon: const Icon(Icons.close),
-                                      ),
-                                      Center(
-                                          child: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? MyMarketKuLogotype.light(
-                                                  fontSize: 20)
-                                              : MyMarketKuLogotype.dark(
-                                                  fontSize: 20)),
-                                    ],
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  onTap: () {
-                                    Future.delayed(Duration.zero).then((_) {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (_) => const MyProfilPage(),
-                                        ),
-                                      );
-                                    });
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
                                   },
-                                  child: () {
-                                    if (!snapshot.hasData) {
-                                      return const LinearProgressIndicator();
-                                    }
-
-                                    return ListTile(
-                                      contentPadding: const EdgeInsets.all(0),
-                                      leading: CircleAvatar(
-                                        radius: 18,
-                                        foregroundImage: NetworkImage(
-                                          pengguna.urlFotoProfil ??
-                                              urlFotoProfilDefault,
-                                        ),
-                                      ),
-                                      minLeadingWidth: 40 - 5,
-                                      title: Text(pengguna.nama),
-                                      subtitle: Text(pengguna.alamatEmail),
-                                    );
-                                  }(),
+                                  icon: const Icon(Icons.close),
                                 ),
-                                const Divider(),
-                                PopupMenuItem(
-                                  onTap: () async {
-                                    await Future.delayed(
-                                      const Duration(seconds: 0),
-                                    );
-
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text('Ganti tema'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: const Text('Selesai'),
-                                            )
-                                          ],
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: List.generate(
-                                              3,
-                                              (i) {
-                                                ThemeMode themeMode;
-                                                if (i == 0) {
-                                                  themeMode = ThemeMode.light;
-                                                } else if (i == 1) {
-                                                  themeMode = ThemeMode.dark;
-                                                } else {
-                                                  themeMode = ThemeMode.system;
-                                                }
-
-                                                return RadioListTile<ThemeMode>(
-                                                  value: themeMode,
-                                                  groupValue:
-                                                      MyApp.themeMode.value,
-                                                  onChanged: (value) {
-                                                    MyApp.prefs!.setString(
-                                                        'theme_mode',
-                                                        value!.name);
-
-                                                    MyApp.themeMode.value =
-                                                        value;
-                                                  },
-                                                  title: Builder(builder: (_) {
-                                                    if (themeMode ==
-                                                        ThemeMode.light) {
-                                                      return const Text(
-                                                          'Terang');
-                                                    } else if (themeMode ==
-                                                        ThemeMode.dark) {
-                                                      return const Text(
-                                                          'Gelap');
-                                                    } else {
-                                                      return const Text(
-                                                          'Sistem');
-                                                    }
-                                                  }),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Builder(
-                                        builder: (_) {
-                                          final isOnDarkMode = MyApp
-                                                      .themeMode.value ==
-                                                  ThemeMode.dark ||
-                                              (MyApp.themeMode.value ==
-                                                      ThemeMode.system &&
-                                                  MediaQuery.of(context)
-                                                          .platformBrightness ==
-                                                      Brightness.dark);
-
-                                          if (isOnDarkMode) {
-                                            return const Icon(
-                                                Icons.dark_mode_outlined);
-                                          } else {
-                                            return const Icon(
-                                                Icons.light_mode_outlined);
-                                          }
-                                        },
-                                      ),
-                                      const SizedBox(width: 8),
-                                      const Text('Tema Aplikasi'),
-                                    ],
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  onTap: () async {
-                                    await Future.delayed(
-                                      const Duration(seconds: 0),
-                                    );
-
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            const MyColorPicker());
-                                  },
-                                  child: Row(
-                                    children: const [
-                                      Icon(Icons.color_lens_outlined),
-                                      SizedBox(width: 8),
-                                      Text('Warna Aplikasi'),
-                                    ],
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  onTap: () async {
-                                    await FirebaseAuth.instance.signOut();
-
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (_) => const MyHomePage(),
-                                      ),
-                                    );
-                                  },
-                                  child: Row(
-                                    children: const [
-                                      Icon(Icons.logout, color: Colors.red),
-                                      SizedBox(width: 8),
-                                      Text('Keluar'),
-                                    ],
-                                  ),
-                                ),
+                                Center(
+                                    child: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? MyMarketKuLogotype.light(fontSize: 20)
+                                        : MyMarketKuLogotype.dark(
+                                            fontSize: 20)),
                               ],
                             ),
-                          );
-                        },
-                      );
-                    },
-                    icon: CircleAvatar(
-                      radius: 18,
-                      foregroundImage: NetworkImage(
-                        pengguna.urlFotoProfil ?? urlFotoProfilDefault,
+                          ),
+                          PopupMenuItem(
+                            onTap: () {
+                              Future.delayed(Duration.zero).then((_) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => const MyProfilPage(),
+                                  ),
+                                );
+                              });
+                            },
+                            child: () {
+                              return ListTile(
+                                contentPadding: const EdgeInsets.all(0),
+                                leading: CircleAvatar(
+                                  radius: 18,
+                                  foregroundImage: NetworkImage(
+                                    MyApp.pengguna!.urlFotoProfil ??
+                                        urlFotoProfilDefault,
+                                  ),
+                                ),
+                                minLeadingWidth: 40 - 5,
+                                title: Text(MyApp.pengguna!.nama),
+                                subtitle: Text(MyApp.pengguna!.alamatEmail),
+                              );
+                            }(),
+                          ),
+                          const Divider(),
+                          PopupMenuItem(
+                            onTap: () async {
+                              await Future.delayed(
+                                const Duration(seconds: 0),
+                              );
+
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Ganti tema'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        child: const Text('Selesai'),
+                                      )
+                                    ],
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: List.generate(
+                                        3,
+                                        (i) {
+                                          ThemeMode themeMode;
+                                          if (i == 0) {
+                                            themeMode = ThemeMode.light;
+                                          } else if (i == 1) {
+                                            themeMode = ThemeMode.dark;
+                                          } else {
+                                            themeMode = ThemeMode.system;
+                                          }
+
+                                          return RadioListTile<ThemeMode>(
+                                            value: themeMode,
+                                            groupValue: MyApp.themeMode.value,
+                                            onChanged: (value) {
+                                              MyApp.prefs!.setString(
+                                                  'theme_mode', value!.name);
+
+                                              MyApp.themeMode.value = value;
+                                            },
+                                            title: Builder(builder: (_) {
+                                              if (themeMode ==
+                                                  ThemeMode.light) {
+                                                return const Text('Terang');
+                                              } else if (themeMode ==
+                                                  ThemeMode.dark) {
+                                                return const Text('Gelap');
+                                              } else {
+                                                return const Text('Sistem');
+                                              }
+                                            }),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Builder(
+                                  builder: (_) {
+                                    final isOnDarkMode =
+                                        MyApp.themeMode.value ==
+                                                ThemeMode.dark ||
+                                            (MyApp.themeMode.value ==
+                                                    ThemeMode.system &&
+                                                MediaQuery.of(context)
+                                                        .platformBrightness ==
+                                                    Brightness.dark);
+
+                                    if (isOnDarkMode) {
+                                      return const Icon(
+                                          Icons.dark_mode_outlined);
+                                    } else {
+                                      return const Icon(
+                                          Icons.light_mode_outlined);
+                                    }
+                                  },
+                                ),
+                                const SizedBox(width: 8),
+                                const Text('Tema Aplikasi'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            onTap: () async {
+                              await Future.delayed(
+                                const Duration(seconds: 0),
+                              );
+
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => const MyColorPicker());
+                            },
+                            child: Row(
+                              children: const [
+                                Icon(Icons.color_lens_outlined),
+                                SizedBox(width: 8),
+                                Text('Warna Aplikasi'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            onTap: () async {
+                              await FirebaseAuth.instance.signOut();
+
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (_) => const MyHomePage(),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              children: const [
+                                Icon(Icons.logout, color: Colors.red),
+                                SizedBox(width: 8),
+                                Text('Keluar'),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  },
+                );
+              },
+              icon: CircleAvatar(
+                radius: 18,
+                foregroundImage: NetworkImage(
+                  MyApp.pengguna!.urlFotoProfil ?? urlFotoProfilDefault,
+                ),
+              ),
+            ),
           ],
         ),
       ),

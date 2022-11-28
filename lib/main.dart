@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:marketku/pages/home/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
+import 'models/pengguna.dart';
 import 'splash_screen.dart';
 
 void main() async {
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
   static SharedPreferences? prefs;
   static final themeMode = ValueNotifier(ThemeMode.system);
   static final seedColor = ValueNotifier(const Color(0xFF0463F1));
+  static Pengguna? pengguna;
 
   @override
   Widget build(BuildContext context) {
@@ -54,62 +57,78 @@ class MyMaterialApp extends StatelessWidget {
       valueListenable: MyApp.themeMode,
       builder: (_, themeMode, ___) {
         return ValueListenableBuilder(
-            valueListenable: MyApp.seedColor,
-            builder: (_, seedColor, ___) {
-              final colorScheme = ColorScheme.fromSeed(
-                brightness: Brightness.light,
-                seedColor: MyApp.seedColor.value,
-              );
+          valueListenable: MyApp.seedColor,
+          builder: (_, seedColor, ___) {
+            final colorScheme = ColorScheme.fromSeed(
+              brightness: Brightness.light,
+              seedColor: MyApp.seedColor.value,
+            );
 
-              final darkColorScheme = ColorScheme.fromSeed(
-                brightness: Brightness.dark,
-                seedColor: MyApp.seedColor.value,
-              );
+            final darkColorScheme = ColorScheme.fromSeed(
+              brightness: Brightness.dark,
+              seedColor: MyApp.seedColor.value,
+            );
 
-              final theme = ThemeData(
-                useMaterial3: true,
-                scaffoldBackgroundColor: colorScheme.background,
-                colorScheme: colorScheme,
-                dialogBackgroundColor: colorScheme.background,
-                floatingActionButtonTheme: FloatingActionButtonThemeData(
-                  backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onPrimary,
-                ),
-                textTheme: TextTheme(
-                  displaySmall: TextStyle(color: colorScheme.onBackground),
-                  displayMedium: TextStyle(color: colorScheme.onBackground),
-                  displayLarge: TextStyle(color: colorScheme.onBackground),
-                ),
-              );
+            final theme = ThemeData(
+              useMaterial3: true,
+              scaffoldBackgroundColor: colorScheme.background,
+              colorScheme: colorScheme,
+              dialogBackgroundColor: colorScheme.background,
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
+              ),
+              textTheme: TextTheme(
+                displaySmall: TextStyle(color: colorScheme.onBackground),
+                displayMedium: TextStyle(color: colorScheme.onBackground),
+                displayLarge: TextStyle(color: colorScheme.onBackground),
+              ),
+            );
 
-              final darkTheme = ThemeData(
-                useMaterial3: true,
-                scaffoldBackgroundColor: darkColorScheme.background,
-                colorScheme: darkColorScheme,
-                dialogBackgroundColor: darkColorScheme.background,
-                floatingActionButtonTheme: FloatingActionButtonThemeData(
-                  backgroundColor: colorScheme.primaryContainer,
-                  foregroundColor: colorScheme.onPrimaryContainer,
-                ),
-                textTheme: TextTheme(
-                  displaySmall: TextStyle(color: darkColorScheme.onBackground),
-                  displayMedium: TextStyle(color: darkColorScheme.onBackground),
-                  displayLarge: TextStyle(color: darkColorScheme.onBackground),
-                ),
-              );
+            final darkTheme = ThemeData(
+              useMaterial3: true,
+              scaffoldBackgroundColor: darkColorScheme.background,
+              colorScheme: darkColorScheme,
+              dialogBackgroundColor: darkColorScheme.background,
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: colorScheme.primaryContainer,
+                foregroundColor: colorScheme.onPrimaryContainer,
+              ),
+              textTheme: TextTheme(
+                displaySmall: TextStyle(color: darkColorScheme.onBackground),
+                displayMedium: TextStyle(color: darkColorScheme.onBackground),
+                displayLarge: TextStyle(color: darkColorScheme.onBackground),
+              ),
+            );
 
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'MarketKu',
-                themeMode: themeMode,
-                theme: theme,
-                darkTheme: darkTheme,
-                home: const MySplashScreen(
-                  duration: Duration(seconds: 2),
-                  home: MyHomePage(),
-                ),
-              );
-            });
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'MarketKu',
+              themeMode: themeMode,
+              theme: theme,
+              darkTheme: darkTheme,
+              home: MySplashScreen(
+                duration: Duration(seconds: 2),
+                home: FutureBuilder(
+                    future: Pengguna.getById(
+                        FirebaseAuth.instance.currentUser!.uid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Scaffold(
+                          body: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+
+                      MyApp.pengguna = snapshot.data;
+
+                      return MyHomePage();
+                    }),
+              ),
+            );
+          },
+        );
       },
     );
   }

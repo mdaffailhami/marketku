@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marketku/main.dart';
 import 'package:marketku/models/barang.dart';
 import 'package:marketku/models/barang_favorit.dart';
 import 'package:marketku/models/jasa.dart';
@@ -70,115 +71,97 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
     if (widget.produk.runtimeType == Barang) {
       final barang = widget.produk as Barang;
 
+      final currentUser = MyApp.pengguna;
+
       return FutureBuilder(
-        future: Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
+        future: BarangFavorit.checkIfBarangIsSaved(barang, currentUser!),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return dummyIconButton;
           }
 
-          final currentUser = snapshot.data;
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data!) {
+              return IconButton(
+                tooltip: 'Hapus dari favorit',
+                onPressed: () async {
+                  await currentUser.removeBarangFavorit(barang);
 
-          return FutureBuilder(
-            future: BarangFavorit.checkIfBarangIsSaved(barang, currentUser!),
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return dummyIconButton;
-              }
+                  setState(() {});
+                },
+                icon: const Icon(
+                  Icons.bookmark,
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 2)],
+                ),
+              );
+            } else {
+              return IconButton(
+                tooltip: 'Tambahkan ke favorit',
+                onPressed: () async {
+                  await currentUser.addBarangFavorit(barang);
 
-              if (snapshot.hasData &&
-                  snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data!) {
-                  return IconButton(
-                    tooltip: 'Hapus dari favorit',
-                    onPressed: () async {
-                      await currentUser.removeBarangFavorit(barang);
-
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.bookmark,
-                      color: Colors.white,
-                      shadows: [Shadow(blurRadius: 2)],
-                    ),
-                  );
-                } else {
-                  return IconButton(
-                    tooltip: 'Tambahkan ke favorit',
-                    onPressed: () async {
-                      await currentUser.addBarangFavorit(barang);
-
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.bookmark_outline,
-                      color: Colors.white,
-                      shadows: [Shadow(blurRadius: 2)],
-                    ),
-                  );
-                }
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          );
+                  setState(() {});
+                },
+                icon: const Icon(
+                  Icons.bookmark_outline,
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 2)],
+                ),
+              );
+            }
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       );
     } else {
       final jasa = widget.produk as Jasa;
 
+      final currentUser = MyApp.pengguna;
+
       return FutureBuilder(
-        future: Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
+        future: JasaFavorit.checkIfJasaIsSaved(jasa, currentUser!),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return dummyIconButton;
           }
 
-          final currentUser = snapshot.data;
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data!) {
+              return IconButton(
+                tooltip: 'Hapus dari favorit',
+                onPressed: () async {
+                  await currentUser.removeJasaFavorit(jasa);
 
-          return FutureBuilder(
-            future: JasaFavorit.checkIfJasaIsSaved(jasa, currentUser!),
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return dummyIconButton;
-              }
+                  setState(() {});
+                },
+                icon: const Icon(
+                  Icons.bookmark,
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 2)],
+                ),
+              );
+            } else {
+              return IconButton(
+                tooltip: 'Tambahkan ke favorit',
+                onPressed: () async {
+                  await currentUser.addJasaFavorit(jasa);
 
-              if (snapshot.hasData &&
-                  snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data!) {
-                  return IconButton(
-                    tooltip: 'Hapus dari favorit',
-                    onPressed: () async {
-                      await currentUser.removeJasaFavorit(jasa);
-
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.bookmark,
-                      color: Colors.white,
-                      shadows: [Shadow(blurRadius: 2)],
-                    ),
-                  );
-                } else {
-                  return IconButton(
-                    tooltip: 'Tambahkan ke favorit',
-                    onPressed: () async {
-                      await currentUser.addJasaFavorit(jasa);
-
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.bookmark_outline,
-                      color: Colors.white,
-                      shadows: [Shadow(blurRadius: 2)],
-                    ),
-                  );
-                }
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          );
+                  setState(() {});
+                },
+                icon: const Icon(
+                  Icons.bookmark_outline,
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 2)],
+                ),
+              );
+            }
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       );
     }

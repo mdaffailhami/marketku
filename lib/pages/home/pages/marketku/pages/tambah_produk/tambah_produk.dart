@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:marketku/main.dart';
 import 'package:marketku/models/barang.dart';
 import 'package:marketku/models/jasa.dart';
 import 'package:marketku/models/pengguna.dart';
@@ -55,8 +56,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
       },
     );
 
-    final pengguna =
-        await Pengguna.getById(FirebaseAuth.instance.currentUser!.uid);
+    final pengguna = MyApp.pengguna;
 
     String urlFoto = defaultUrlFoto;
 
