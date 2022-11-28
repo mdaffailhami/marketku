@@ -81,16 +81,23 @@ class _MyBarangPageState extends State<MyBarangPage> {
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Padding(
-                          padding: EdgeInsets.only(top: 100),
+                          padding: EdgeInsets.only(top: 50),
                           child: Center(child: CircularProgressIndicator()),
                         );
                       }
 
                       final List<Barang>? barang = snapshot.data;
 
+                      if (barang!.isEmpty) {
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text('Produk tidak ditemukan!'),
+                        );
+                      }
+
                       return Wrap(
                         children: List.generate(
-                          barang!.length,
+                          barang.length,
                           (int i) {
                             return FutureBuilder(
                               future: Pengguna.getById(barang[i].idPengguna),

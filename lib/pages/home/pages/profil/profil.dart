@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:marketku/main.dart';
 import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/widgets/text_form_field.dart';
 
@@ -44,8 +44,7 @@ class _MyProfilPageState extends State<MyProfilPage> {
       },
     );
 
-    final pengguna =
-        await Pengguna.getById(FirebaseAuth.instance.currentUser!.uid);
+    final pengguna = MyApp.pengguna;
 
     String? urlFoto;
 
@@ -65,7 +64,7 @@ class _MyProfilPageState extends State<MyProfilPage> {
       }
     }
 
-    await Pengguna.update(
+    Pengguna.update(
       Pengguna(
         id: pengguna!.id,
         nama: nama ?? pengguna.nama,
@@ -74,12 +73,14 @@ class _MyProfilPageState extends State<MyProfilPage> {
         lokasi: lokasi ?? pengguna.lokasi,
         nomorWhatsApp: nomorWhatsApp ?? pengguna.nomorWhatsApp,
       ),
-    );
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Profil tersimpan!')));
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    ).then((value) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Profil tersimpan!')));
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const MyMaterialApp()));
+    });
   }
 
   void pilihFoto() async {
@@ -144,91 +145,79 @@ class _MyProfilPageState extends State<MyProfilPage> {
         padding: const EdgeInsets.all(24),
         child: Form(
           key: formKey,
-          child: FutureBuilder(
-              future: Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                final pengguna = snapshot.data;
-
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: InkWell(
-                        onTap: pilihFoto,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Stack(children: [
-                            foto != null
-                                ? Image.file(
-                                    foto as File,
-                                    width: imageSize.width,
-                                    height: imageSize.height,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.network(
-                                    pengguna!.urlFotoProfil ?? defaultUrlFoto,
-                                    width: imageSize.width,
-                                    height: imageSize.height,
-                                    fit: BoxFit.cover,
-                                  ),
-                            Positioned(
-                              bottom: 0,
-                              child: Container(
-                                width: imageSize.width,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 1),
-                                color: Colors.black45,
-                                child: const Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.white,
-                                ),
-                              ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: InkWell(
+                  onTap: pilihFoto,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Stack(children: [
+                      foto != null
+                          ? Image.file(
+                              foto as File,
+                              width: imageSize.width,
+                              height: imageSize.height,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              MyApp.pengguna!.urlFotoProfil ?? defaultUrlFoto,
+                              width: imageSize.width,
+                              height: imageSize.height,
+                              fit: BoxFit.cover,
                             ),
-                          ]),
+                      Positioned(
+                        bottom: 0,
+                        child: Container(
+                          width: imageSize.width,
+                          padding: const EdgeInsets.symmetric(vertical: 1),
+                          color: Colors.black45,
+                          child: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    MyTextFormField(
-                      onChanged: (String value) => nama = value,
-                      labelText: 'Nama',
-                      initialValue: pengguna!.nama,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                      validator: (String? value) =>
-                          value!.isEmpty ? 'Nama tidak boleh kosong!' : null,
-                    ),
-                    MyTextFormField(
-                      onChanged: (String value) => lokasi = value,
-                      labelText: 'Lokasi',
-                      initialValue: pengguna.lokasi,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                    ),
-                    MyTextFormField(
-                      onChanged: (String value) => nomorWhatsApp = value,
-                      labelText: 'Nomor WhatsApp',
-                      initialValue: pengguna.nomorWhatsApp,
-                      prefix: const Text('+62'),
-                      hintText: '81234567890',
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.send,
-                      onFieldSubmitted: (_) => simpanProfil(),
-                    ),
-                  ].mapIndexed((i, widget) {
-                    return i == 0
-                        ? widget
-                        : Padding(
-                            padding: const EdgeInsets.only(top: 12),
-                            child: widget);
-                  }).toList(),
-                );
-              }),
+                    ]),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              MyTextFormField(
+                onChanged: (String value) => nama = value,
+                labelText: 'Nama',
+                initialValue: MyApp.pengguna!.nama,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                validator: (String? value) =>
+                    value!.isEmpty ? 'Nama tidak boleh kosong!' : null,
+              ),
+              MyTextFormField(
+                onChanged: (String value) => lokasi = value,
+                labelText: 'Lokasi',
+                initialValue: MyApp.pengguna!.lokasi,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+              ),
+              MyTextFormField(
+                onChanged: (String value) => nomorWhatsApp = value,
+                labelText: 'Nomor WhatsApp',
+                initialValue: MyApp.pengguna!.nomorWhatsApp,
+                prefix: const Text('+62'),
+                hintText: '81234567890',
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.send,
+                onFieldSubmitted: (_) => simpanProfil(),
+              ),
+            ].mapIndexed((i, widget) {
+              return i == 0
+                  ? widget
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 12), child: widget);
+            }).toList(),
+          ),
         ),
       ),
     );

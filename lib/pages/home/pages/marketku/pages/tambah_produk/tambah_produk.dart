@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:marketku/main.dart';
 import 'package:marketku/models/barang.dart';
 import 'package:marketku/models/jasa.dart';
-import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/models/produk.dart';
 import 'package:marketku/models/rupiah.dart';
+import 'package:marketku/pages/home/home.dart';
 import 'package:marketku/widgets/choice_chip.dart';
 import 'package:marketku/widgets/text_form_field.dart';
 
@@ -29,7 +29,6 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
   String nama = '';
   String deskripsi = '';
   Rupiah harga = Rupiah(0);
-  String lokasi = '';
   JenisProduk jenisProduk = JenisProduk.barang;
   List<KategoriBarang> kategoriBarang = [];
   List<KategoriJasa> kategoriJasa = [];
@@ -56,8 +55,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
       },
     );
 
-    final pengguna =
-        await Pengguna.getById(FirebaseAuth.instance.currentUser!.uid);
+    final pengguna = MyApp.pengguna;
 
     String urlFoto = defaultUrlFoto;
 
@@ -84,7 +82,6 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
           nama: nama,
           deskripsi: deskripsi,
           harga: harga,
-          lokasi: lokasi,
           kategori: kategoriBarang,
         ),
       );
@@ -96,7 +93,6 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
           nama: nama,
           deskripsi: deskripsi,
           harga: harga,
-          lokasi: lokasi,
           kategori: kategoriJasa,
         ),
       );
@@ -105,6 +101,13 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
     showSnackBar('Produk berhasil ditambahkan!');
     Navigator.of(context).pop();
     Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => const MyHomePage(
+          initialPageIndex: 1,
+        ),
+      ),
+    );
   }
 
   void pilihFoto() async {
@@ -232,12 +235,6 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
                 labelText: 'Harga',
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
-              ),
-              MyTextFormField(
-                onChanged: (String value) => lokasi = value,
-                labelText: 'Lokasi',
-                keyboardType: TextInputType.streetAddress,
-                textInputAction: TextInputAction.done,
               ),
               Text('Jenis', style: Theme.of(context).textTheme.titleLarge),
               Row(

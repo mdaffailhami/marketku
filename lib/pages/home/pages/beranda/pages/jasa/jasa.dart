@@ -25,13 +25,12 @@ class _MyJasaPageState extends State<MyJasaPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const MyBanner(
-              imageUrl:
-                  'https://cdnwpseller.gramedia.net/wp-content/uploads/2021/08/19153353/Usaha-Jasa.jpg',
+              imageAsset: 'assets/jasa-page-banner.jpg',
               text: 'Kami menyediakan berbagai jasa yang layak untuk anda!',
             ),
             const SizedBox(height: 12),
             Text(
-              'Jasa yang mungkin anda cari',
+              'Jasa untuk anda',
               style: Theme.of(context)
                   .textTheme
                   .headline6
@@ -84,7 +83,7 @@ class _MyJasaPageState extends State<MyJasaPage> {
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Padding(
-                          padding: EdgeInsets.only(top: 100),
+                          padding: EdgeInsets.only(top: 50),
                           child: Center(child: CircularProgressIndicator()),
                         );
                       }

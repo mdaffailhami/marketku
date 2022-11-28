@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marketku/main.dart';
 import 'package:marketku/models/barang.dart';
 import 'package:marketku/models/barang_favorit.dart';
 import 'package:marketku/models/jasa.dart';
 import 'package:marketku/models/jasa_favorit.dart';
 import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/models/produk.dart';
+import 'package:marketku/pages/home/home.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyDetailProdukPage extends StatefulWidget {
@@ -70,115 +72,129 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
     if (widget.produk.runtimeType == Barang) {
       final barang = widget.produk as Barang;
 
+      final currentUser = MyApp.pengguna;
+
       return FutureBuilder(
-        future: Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
+        future: BarangFavorit.checkIfBarangIsSaved(barang, currentUser!),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return dummyIconButton;
           }
 
-          final currentUser = snapshot.data;
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data!) {
+              return IconButton(
+                tooltip: 'Hapus dari favorit',
+                onPressed: () async {
+                  currentUser.removeBarangFavorit(barang).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produk berhasil dihapus dari daftar favorit',
+                        ),
+                      ),
+                    );
 
-          return FutureBuilder(
-            future: BarangFavorit.checkIfBarangIsSaved(barang, currentUser!),
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return dummyIconButton;
-              }
+                    setState(() {});
+                  });
+                },
+                icon: const Icon(
+                  Icons.bookmark,
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 2)],
+                ),
+              );
+            } else {
+              return IconButton(
+                tooltip: 'Tambahkan ke favorit',
+                onPressed: () async {
+                  currentUser.addBarangFavorit(barang).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produk berhasil ditambahkan ke daftar favorit',
+                        ),
+                      ),
+                    );
 
-              if (snapshot.hasData &&
-                  snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data!) {
-                  return IconButton(
-                    tooltip: 'Hapus dari favorit',
-                    onPressed: () async {
-                      await currentUser.removeBarangFavorit(barang);
-
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.bookmark,
-                      color: Colors.white,
-                      shadows: [Shadow(blurRadius: 2)],
-                    ),
-                  );
-                } else {
-                  return IconButton(
-                    tooltip: 'Tambahkan ke favorit',
-                    onPressed: () async {
-                      await currentUser.addBarangFavorit(barang);
-
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.bookmark_outline,
-                      color: Colors.white,
-                      shadows: [Shadow(blurRadius: 2)],
-                    ),
-                  );
-                }
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          );
+                    setState(() {});
+                  });
+                },
+                icon: const Icon(
+                  Icons.bookmark_outline,
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 2)],
+                ),
+              );
+            }
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       );
     } else {
       final jasa = widget.produk as Jasa;
 
+      final currentUser = MyApp.pengguna;
+
       return FutureBuilder(
-        future: Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
+        future: JasaFavorit.checkIfJasaIsSaved(jasa, currentUser!),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return dummyIconButton;
           }
 
-          final currentUser = snapshot.data;
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data!) {
+              return IconButton(
+                tooltip: 'Hapus dari favorit',
+                onPressed: () async {
+                  currentUser.removeJasaFavorit(jasa).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produk berhasil dihapus dari daftar favorit',
+                        ),
+                      ),
+                    );
 
-          return FutureBuilder(
-            future: JasaFavorit.checkIfJasaIsSaved(jasa, currentUser!),
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return dummyIconButton;
-              }
+                    setState(() {});
+                  });
+                },
+                icon: const Icon(
+                  Icons.bookmark,
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 2)],
+                ),
+              );
+            } else {
+              return IconButton(
+                tooltip: 'Tambahkan ke favorit',
+                onPressed: () async {
+                  currentUser.addJasaFavorit(jasa).then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produk berhasil ditambahkan ke daftar favorit',
+                        ),
+                      ),
+                    );
 
-              if (snapshot.hasData &&
-                  snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data!) {
-                  return IconButton(
-                    tooltip: 'Hapus dari favorit',
-                    onPressed: () async {
-                      await currentUser.removeJasaFavorit(jasa);
-
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.bookmark,
-                      color: Colors.white,
-                      shadows: [Shadow(blurRadius: 2)],
-                    ),
-                  );
-                } else {
-                  return IconButton(
-                    tooltip: 'Tambahkan ke favorit',
-                    onPressed: () async {
-                      await currentUser.addJasaFavorit(jasa);
-
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.bookmark_outline,
-                      color: Colors.white,
-                      shadows: [Shadow(blurRadius: 2)],
-                    ),
-                  );
-                }
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          );
+                    setState(() {});
+                  });
+                },
+                icon: const Icon(
+                  Icons.bookmark_outline,
+                  color: Colors.white,
+                  shadows: [Shadow(blurRadius: 2)],
+                ),
+              );
+            }
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       );
     }
@@ -198,8 +214,12 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
             ? Theme.of(context).colorScheme.onPrimaryContainer
             : Theme.of(context).colorScheme.onPrimary,
         onPressed: () async {
-          final url =
-              Uri.parse('https://wa.me/62${widget.pemilik.nomorWhatsApp}');
+          final initialMessage = Uri.encodeComponent(
+            '*PRODUK*\nNama: ${widget.produk.nama}\nHarga: ${widget.produk.harga}\nFoto: ${widget.produk.urlFoto}\n\nPesan: ',
+          );
+
+          final url = Uri.parse(
+              'https://wa.me/62${widget.pemilik.nomorWhatsApp}?text=$initialMessage');
 
           if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -286,6 +306,13 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (_) => const MyHomePage(
+                                        initialPageIndex: 1,
+                                      ),
+                                    ),
+                                  );
                                 });
                               },
                               child: const Text(
@@ -300,7 +327,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                   },
                   tooltip: 'Hapus produk',
                   icon: const Icon(
-                    Icons.delete_outline,
+                    Icons.delete,
                     color: Colors.red,
                   ),
                 ),
@@ -413,7 +440,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                         color: Theme.of(context).colorScheme.primary),
                   ),
                   Text(widget.produk.deskripsi),
-                  const SizedBox(height: 2000),
+                  const SizedBox(height: 1500),
                 ],
               ),
             ),

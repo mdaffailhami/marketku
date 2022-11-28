@@ -25,13 +25,12 @@ class _MyBarangPageState extends State<MyBarangPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const MyBanner(
-              imageUrl:
-                  'https://c0.wallpaperflare.com/preview/250/807/592/person-human-market-shop.jpg',
+              imageAsset: 'assets/barang-page-banner.jpg',
               text: 'Kami menyediakan berbagai barang yang layak untuk anda!',
             ),
             const SizedBox(height: 12),
             Text(
-              'Barang yang mungkin anda suka',
+              'Barang untuk anda',
               style: Theme.of(context)
                   .textTheme
                   .headline6
@@ -84,7 +83,7 @@ class _MyBarangPageState extends State<MyBarangPage> {
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Padding(
-                          padding: EdgeInsets.only(top: 100),
+                          padding: EdgeInsets.only(top: 50),
                           child: Center(child: CircularProgressIndicator()),
                         );
                       }
