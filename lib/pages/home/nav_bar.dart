@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MyNavBar extends StatelessWidget {
   const MyNavBar({
@@ -29,7 +30,7 @@ class MyNavBar extends StatelessWidget {
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home_filled),
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(MdiIcons.homeVariantOutline),
             label: 'Beranda',
             tooltip: '',
           ),
