@@ -97,7 +97,7 @@ class _MyJasaPageState extends State<MyJasaPage> {
 
                       return Wrap(
                         children: List.generate(
-                          jasa!.length,
+                          jasa.length,
                           (int i) {
                             return FutureBuilder(
                               future: Pengguna.getById(jasa[i].idPengguna),

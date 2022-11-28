@@ -97,7 +97,7 @@ class _MyBarangPageState extends State<MyBarangPage> {
 
                       return Wrap(
                         children: List.generate(
-                          barang!.length,
+                          barang.length,
                           (int i) {
                             return FutureBuilder(
                               future: Pengguna.getById(barang[i].idPengguna),
