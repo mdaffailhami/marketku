@@ -7,6 +7,7 @@ import 'package:marketku/models/jasa.dart';
 import 'package:marketku/models/jasa_favorit.dart';
 import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/models/produk.dart';
+import 'package:marketku/pages/home/home.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyDetailProdukPage extends StatefulWidget {
@@ -305,6 +306,13 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (_) => const MyHomePage(
+                                        initialPageIndex: 1,
+                                      ),
+                                    ),
+                                  );
                                 });
                               },
                               child: const Text(
