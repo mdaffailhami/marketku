@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marketku/main.dart';
 import 'package:marketku/pages/home/home.dart';
 import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/pages/home/pages/profil/profil.dart';
@@ -20,6 +21,8 @@ class MyAppBar extends StatelessWidget {
   final String searchBarHint;
   final String urlFotoProfilDefault =
       'https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=170x170&k=20&c=pVkxcoiVUlD0uOzasLU41qdrAQpT1B3vBfKSJQWuNq4=';
+
+  void gantiModeTema() {}
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,10 @@ class MyAppBar extends StatelessWidget {
                 future:
                     Pengguna.getById(FirebaseAuth.instance.currentUser!.uid),
                 builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox.shrink();
+                  }
+
                   final Pengguna pengguna = snapshot.data as Pengguna;
 
                   return IconButton(
@@ -133,20 +140,95 @@ class MyAppBar extends StatelessWidget {
                                 }()),
                                 const Divider(),
                                 PopupMenuItem(
+                                  onTap: () async {
+                                    await Future.delayed(
+                                      const Duration(seconds: 0),
+                                    );
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text('Ganti tema'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: const Text('Selesai'),
+                                            )
+                                          ],
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: List.generate(
+                                              3,
+                                              (i) {
+                                                ThemeMode themeMode;
+                                                if (i == 0) {
+                                                  themeMode = ThemeMode.light;
+                                                } else if (i == 1) {
+                                                  themeMode = ThemeMode.dark;
+                                                } else {
+                                                  themeMode = ThemeMode.system;
+                                                }
+
+                                                return RadioListTile<ThemeMode>(
+                                                  value: themeMode,
+                                                  groupValue:
+                                                      MyApp.themeMode.value,
+                                                  onChanged: (value) {
+                                                    MyApp.prefs!.setString(
+                                                        'theme_mode',
+                                                        value!.name);
+
+                                                    MyApp.themeMode.value =
+                                                        value;
+                                                  },
+                                                  title: Builder(builder: (_) {
+                                                    if (themeMode ==
+                                                        ThemeMode.light) {
+                                                      return const Text(
+                                                          'Terang');
+                                                    } else if (themeMode ==
+                                                        ThemeMode.dark) {
+                                                      return const Text(
+                                                          'Gelap');
+                                                    } else {
+                                                      return const Text(
+                                                          'Sistem');
+                                                    }
+                                                  }),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                   child: Row(
-                                    children: const [
-                                      Icon(Icons.bookmark_outline),
-                                      SizedBox(width: 8),
-                                      Text('Favorit'),
-                                    ],
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: Row(
-                                    children: const [
-                                      Icon(Icons.settings_outlined),
-                                      SizedBox(width: 8),
-                                      Text('Pengaturan'),
+                                    children: [
+                                      Builder(
+                                        builder: (_) {
+                                          final isOnDarkMode = MyApp
+                                                      .themeMode.value ==
+                                                  ThemeMode.dark ||
+                                              (MyApp.themeMode.value ==
+                                                      ThemeMode.system &&
+                                                  MediaQuery.of(context)
+                                                          .platformBrightness ==
+                                                      Brightness.dark);
+
+                                          if (isOnDarkMode) {
+                                            return const Icon(
+                                                Icons.dark_mode_outlined);
+                                          } else {
+                                            return const Icon(
+                                                Icons.light_mode_outlined);
+                                          }
+                                        },
+                                      ),
+                                      const SizedBox(width: 8),
+                                      const Text('Tema Aplikasi'),
                                     ],
                                   ),
                                 ),
