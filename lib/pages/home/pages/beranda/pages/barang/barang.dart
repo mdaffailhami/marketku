@@ -25,8 +25,7 @@ class _MyBarangPageState extends State<MyBarangPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const MyBanner(
-              imageUrl:
-                  'https://c0.wallpaperflare.com/preview/250/807/592/person-human-market-shop.jpg',
+              imageAsset: 'assets/barang-page-banner.jpg',
               text: 'Kami menyediakan berbagai barang yang layak untuk anda!',
             ),
             const SizedBox(height: 12),

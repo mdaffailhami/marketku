@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class MyBanner extends StatelessWidget {
   const MyBanner({
     super.key,
-    required this.imageUrl,
+    required this.imageAsset,
     required this.text,
   });
 
-  final String imageUrl;
+  final String imageAsset;
   final String text;
 
   @override
@@ -18,8 +18,8 @@ class MyBanner extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: Stack(
         children: [
-          Image.network(
-            imageUrl,
+          Image.asset(
+            imageAsset,
             height: height,
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,

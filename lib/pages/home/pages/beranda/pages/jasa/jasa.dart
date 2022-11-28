@@ -25,8 +25,7 @@ class _MyJasaPageState extends State<MyJasaPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const MyBanner(
-              imageUrl:
-                  'https://cdnwpseller.gramedia.net/wp-content/uploads/2021/08/19153353/Usaha-Jasa.jpg',
+              imageAsset: 'assets/jasa-page-banner.jpg',
               text: 'Kami menyediakan berbagai jasa yang layak untuk anda!',
             ),
             const SizedBox(height: 12),
