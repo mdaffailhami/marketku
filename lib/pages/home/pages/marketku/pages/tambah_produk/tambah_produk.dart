@@ -75,29 +75,35 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
     }
 
     if (jenisProduk == JenisProduk.barang) {
-      pengguna!.addProduk(
-        Barang(
-          idPengguna: pengguna.id,
-          urlFoto: urlFoto,
-          nama: nama,
-          deskripsi: deskripsi,
-          harga: harga,
-          kategori: kategoriBarang,
-        ),
-      );
+      pengguna!
+          .addProduk(
+            Barang(
+              idPengguna: pengguna.id,
+              urlFoto: urlFoto,
+              nama: nama,
+              deskripsi: deskripsi,
+              harga: harga,
+              kategori: kategoriBarang,
+            ),
+          )
+          .then((_) => onProdukBerhasilDitambahkan());
     } else if (jenisProduk == JenisProduk.jasa) {
-      pengguna!.addProduk(
-        Jasa(
-          idPengguna: pengguna.id,
-          urlFoto: urlFoto,
-          nama: nama,
-          deskripsi: deskripsi,
-          harga: harga,
-          kategori: kategoriJasa,
-        ),
-      );
+      pengguna!
+          .addProduk(
+            Jasa(
+              idPengguna: pengguna.id,
+              urlFoto: urlFoto,
+              nama: nama,
+              deskripsi: deskripsi,
+              harga: harga,
+              kategori: kategoriJasa,
+            ),
+          )
+          .then((_) => onProdukBerhasilDitambahkan());
     }
+  }
 
+  void onProdukBerhasilDitambahkan() {
     showSnackBar('Produk berhasil ditambahkan!');
     Navigator.of(context).pop();
     Navigator.of(context).pop();
