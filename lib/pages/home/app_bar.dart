@@ -135,7 +135,7 @@ class MyAppBar extends StatelessWidget {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text('Ganti tema'),
+                                    title: const Text('Pilih tema aplikasi'),
                                     actions: [
                                       TextButton(
                                         onPressed: () =>
