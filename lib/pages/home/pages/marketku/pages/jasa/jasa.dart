@@ -85,7 +85,7 @@ class _MyJasaPageState extends State<MyJasaPage> {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const Padding(
-                            padding: EdgeInsets.only(top: 100),
+                            padding: EdgeInsets.only(top: 50),
                             child: Center(child: CircularProgressIndicator()),
                           );
                         }
