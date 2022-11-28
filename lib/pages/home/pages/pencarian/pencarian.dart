@@ -106,7 +106,11 @@ class _MyPencarianPageState extends State<MyPencarianPage> {
               ),
             );
 
-            return Column(children: children);
+            return SingleChildScrollView(
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(children: children)),
+            );
           },
         ),
       ),

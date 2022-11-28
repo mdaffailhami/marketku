@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart' as lol;
 import 'package:marketku/main.dart';
 import 'package:marketku/pages/home/home.dart';
-import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/pages/home/pages/profil/profil.dart';
 import 'package:marketku/widgets/marketku_logotype.dart';
 

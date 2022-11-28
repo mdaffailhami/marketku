@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -8,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:marketku/main.dart';
 import 'package:marketku/models/barang.dart';
 import 'package:marketku/models/jasa.dart';
-import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/models/produk.dart';
 import 'package:marketku/models/rupiah.dart';
 import 'package:marketku/pages/home/home.dart';
