@@ -45,11 +45,14 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
       barrierDismissible: false,
       context: context,
       builder: (_) {
-        return const AlertDialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          content: Center(
-            child: CircularProgressIndicator(),
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: const AlertDialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
         );
       },
@@ -106,14 +109,14 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
 
   void onProdukBerhasilDitambahkan() {
     showSnackBar('Produk berhasil ditambahkan!');
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pushReplacement(
+
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => const MyHomePage(
           initialPageIndex: 1,
         ),
       ),
+      (_) => false,
     );
   }
 

@@ -34,11 +34,14 @@ class _MyProfilPageState extends State<MyProfilPage> {
       barrierDismissible: false,
       context: context,
       builder: (_) {
-        return const AlertDialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          content: Center(
-            child: CircularProgressIndicator(),
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: const AlertDialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
         );
       },
@@ -76,10 +79,13 @@ class _MyProfilPageState extends State<MyProfilPage> {
     ).then((value) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Profil tersimpan!')));
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const MyMaterialApp()));
+
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (_) => const MyMaterialApp(),
+        ),
+        (_) => false,
+      );
     });
   }
 
