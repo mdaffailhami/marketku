@@ -256,6 +256,7 @@ class MyAppBar extends StatelessWidget {
               },
               icon: CircleAvatar(
                 radius: 18,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
                 foregroundImage: NetworkImage(
                   MyApp.pengguna!.urlFotoProfil ?? urlFotoProfilDefault,
                 ),
