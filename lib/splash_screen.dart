@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'widgets/marketku_logotype.dart';
 
 class MySplashScreen extends StatelessWidget {
   const MySplashScreen({
@@ -25,9 +24,10 @@ class MySplashScreen extends StatelessWidget {
 
     return Scaffold(
       body: Center(
-        child: Theme.of(context).brightness == Brightness.dark
-            ? MyMarketKuLogotype.light(fontSize: 40)
-            : MyMarketKuLogotype.dark(fontSize: 40),
+        child: Image.asset(
+          'assets/marketku-logo.png',
+          width: 180,
+        ),
       ),
     );
   }

@@ -39,4 +39,4 @@ flutter:
 
 flutter_icons:
   android: true
-  image_path: 'assets/logo.png'
+  image_path: 'assets/marketku-logo-white-bg.png'
