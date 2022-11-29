@@ -16,6 +16,9 @@ class MyProdukCard extends StatelessWidget {
   final Pengguna pemilik;
   final bool currentUserIsPemilik;
 
+  final String urlFotoProfilDefault =
+      'https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=170x170&k=20&c=pVkxcoiVUlD0uOzasLU41qdrAQpT1B3vBfKSJQWuNq4=';
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -48,7 +51,7 @@ class MyProdukCard extends StatelessWidget {
           elevation: 0,
           child: SizedBox(
             width: 150,
-            height: 200,
+            height: 210,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -84,27 +87,55 @@ class MyProdukCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        produk.harga.toString(),
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 10,
+                                  foregroundImage: NetworkImage(
+                                    pemilik.urlFotoProfil ??
+                                        urlFotoProfilDefault,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  pemilik.nama,
+                                  style: Theme.of(context).textTheme.labelLarge,
+                                ),
+                              ],
+                            ),
+                            const Divider(height: 6),
+                            Text(
+                              produk.harga.toString(),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 2),
                       Row(
                         children: [
                           Icon(
                             Icons.location_on_outlined,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 17,
+                            color: Theme.of(context).colorScheme.outline,
+                            size: 12,
                           ),
                           Flexible(
                             child: Text(
                               pemilik.lokasi ?? '',
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                              style: TextStyle(
                                 fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.outline,
                               ),
                             ),
                           ),
