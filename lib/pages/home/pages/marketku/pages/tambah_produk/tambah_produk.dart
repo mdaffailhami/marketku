@@ -60,12 +60,13 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
     String urlFoto = defaultUrlFoto;
 
     if (foto != null) {
-      final fileRef = FirebaseStorage.instance
-          .ref()
-          .child(DateTime.now().millisecondsSinceEpoch.toString());
+      final fileName =
+          '${DateTime.now().millisecondsSinceEpoch}.${foto!.path.split('.').last}';
+
+      final fileRef = FirebaseStorage.instance.ref().child(fileName);
 
       try {
-        await fileRef.putFile(foto as File);
+        await fileRef.putFile(foto!);
 
         urlFoto = await fileRef.getDownloadURL();
       } on FirebaseException catch (e) {
@@ -128,7 +129,11 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
           children: [
             PopupMenuItem(
               onTap: () async {
-                foto = await picker.pickImage(source: ImageSource.camera);
+                foto = await picker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 20,
+                );
+
                 setState(() => this.foto = File(foto!.path));
               },
               child: const ListTile(
@@ -139,7 +144,11 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
             ),
             PopupMenuItem(
               onTap: () async {
-                foto = await picker.pickImage(source: ImageSource.gallery);
+                foto = await picker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 20,
+                );
+
                 setState(() => this.foto = File(foto!.path));
               },
               child: const ListTile(

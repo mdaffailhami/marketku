@@ -95,7 +95,11 @@ class _MyProfilPageState extends State<MyProfilPage> {
           children: [
             PopupMenuItem(
               onTap: () async {
-                foto = await picker.pickImage(source: ImageSource.camera);
+                foto = await picker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 20,
+                );
+
                 setState(() => this.foto = File(foto!.path));
               },
               child: const ListTile(
@@ -106,7 +110,11 @@ class _MyProfilPageState extends State<MyProfilPage> {
             ),
             PopupMenuItem(
               onTap: () async {
-                foto = await picker.pickImage(source: ImageSource.gallery);
+                foto = await picker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 20,
+                );
+
                 setState(() => this.foto = File(foto!.path));
               },
               child: const ListTile(
