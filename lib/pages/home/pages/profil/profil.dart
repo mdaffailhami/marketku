@@ -137,7 +137,7 @@ class _MyProfilPageState extends State<MyProfilPage> {
 
   @override
   Widget build(BuildContext context) {
-    const Size imageSize = Size(140, 140);
+    const Size imageSize = Size(150, 150);
 
     return Scaffold(
       appBar: AppBar(
@@ -166,35 +166,43 @@ class _MyProfilPageState extends State<MyProfilPage> {
               Center(
                 child: InkWell(
                   onTap: pilihFoto,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Stack(children: [
-                      foto != null
-                          ? Image.file(
-                              foto as File,
-                              width: imageSize.width,
-                              height: imageSize.height,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.network(
-                              MyApp.pengguna!.urlFotoProfil ?? defaultUrlFoto,
-                              width: imageSize.width,
-                              height: imageSize.height,
-                              fit: BoxFit.cover,
-                            ),
-                      Positioned(
-                        bottom: 0,
-                        child: Container(
-                          width: imageSize.width,
-                          padding: const EdgeInsets.symmetric(vertical: 1),
-                          color: Colors.black45,
-                          child: const Icon(
-                            Icons.camera_alt,
-                            color: Colors.white,
+                  child: SizedBox(
+                    width: imageSize.width,
+                    height: imageSize.height,
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: CircleAvatar(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.outline,
+                            radius: 71.3,
+                            child: foto != null
+                                ? CircleAvatar(
+                                    backgroundImage: FileImage(foto!),
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      MyApp.pengguna!.urlFotoProfil ??
+                                          defaultUrlFoto,
+                                    ),
+                                    radius: 70,
+                                  ),
                           ),
                         ),
-                      ),
-                    ]),
+                        Positioned(
+                          bottom: 3,
+                          right: 3,
+                          child: FloatingActionButton.small(
+                            onPressed: () {},
+                            shape: CircleBorder(),
+                            elevation: 0,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.secondary,
+                            child: Icon(Icons.camera_alt_outlined),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -219,7 +227,13 @@ class _MyProfilPageState extends State<MyProfilPage> {
                 onChanged: (String value) => nomorWhatsApp = value,
                 labelText: 'Nomor WhatsApp',
                 initialValue: MyApp.pengguna!.nomorWhatsApp,
-                prefix: const Text('+62'),
+                prefix: Text(
+                  '+62',
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1!
+                      .copyWith(fontWeight: FontWeight.w500),
+                ),
                 hintText: '81234567890',
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.send,
