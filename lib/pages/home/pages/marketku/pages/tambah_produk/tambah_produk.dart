@@ -68,14 +68,9 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
 
       final fileRef = FirebaseStorage.instance.ref().child(fileName);
 
-      try {
-        await fileRef.putFile(foto!);
+      await fileRef.putFile(foto!);
 
-        urlFoto = await fileRef.getDownloadURL();
-      } on FirebaseException catch (e) {
-        showSnackBar('Gagal menambahkan produk! (${e.code})');
-        return;
-      }
+      urlFoto = await fileRef.getDownloadURL();
     }
 
     if (jenisProduk == JenisProduk.barang) {
@@ -110,8 +105,8 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
   void onProdukBerhasilDitambahkan() {
     showSnackBar('Produk berhasil ditambahkan!');
 
-    Navigator.of(context).pop();
-    Navigator.of(context).pushAndRemoveUntil(
+    // Navigator.of(context).pop();
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => const MyHomePage(
           initialPageIndex: 1,

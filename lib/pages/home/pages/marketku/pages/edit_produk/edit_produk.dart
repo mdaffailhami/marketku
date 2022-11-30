@@ -138,7 +138,7 @@ class _MyEditProdukPageState extends State<MyEditProdukPage> {
 
     showSnackBar('Produk berhasil diedit!');
 
-    Navigator.of(context).pushAndRemoveUntil(
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => const MyHomePage(
           initialPageIndex: 1,
