@@ -178,9 +178,15 @@ class _MyProfilPageState extends State<MyProfilPage> {
                             radius: 71.3,
                             child: foto != null
                                 ? CircleAvatar(
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondaryContainer,
                                     backgroundImage: FileImage(foto!),
                                   )
                                 : CircleAvatar(
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondaryContainer,
                                     backgroundImage: NetworkImage(
                                       MyApp.pengguna!.urlFotoProfil ??
                                           defaultUrlFoto,

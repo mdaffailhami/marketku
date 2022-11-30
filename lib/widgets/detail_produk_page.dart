@@ -428,6 +428,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                   ListTile(
                     contentPadding: const EdgeInsets.all(0),
                     leading: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                       foregroundImage: NetworkImage(
                           widget.pemilik.urlFotoProfil ?? urlFotoProfilDefault),
                     ),

@@ -96,6 +96,8 @@ class MyProdukCard extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   radius: 10,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.secondary,
                                   foregroundImage: NetworkImage(
                                     pemilik.urlFotoProfil ??
                                         urlFotoProfilDefault,

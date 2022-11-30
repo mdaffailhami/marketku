@@ -112,6 +112,8 @@ class MyAppBar extends StatelessWidget {
                                 contentPadding: const EdgeInsets.all(0),
                                 leading: CircleAvatar(
                                   radius: 18,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.secondary,
                                   foregroundImage: NetworkImage(
                                     MyApp.pengguna!.urlFotoProfil ??
                                         urlFotoProfilDefault,
