@@ -276,9 +276,14 @@ class MyAppBar extends StatelessWidget {
           ? TabBar(
               controller: tabController,
               labelColor: Theme.of(context).colorScheme.onBackground,
+              labelStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .copyWith(fontWeight: FontWeight.w500),
               indicatorColor: Theme.of(context).brightness == Brightness.dark
                   ? Theme.of(context).colorScheme.primaryContainer
                   : Theme.of(context).colorScheme.primary,
+              indicatorWeight: 2.5,
               indicatorSize: TabBarIndicatorSize.label,
               tabs: const [
                 Tab(text: 'Barang'),
