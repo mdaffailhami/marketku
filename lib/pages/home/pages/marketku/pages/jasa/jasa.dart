@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:marketku/main.dart';
 import 'package:marketku/models/jasa.dart';
 import 'package:marketku/models/pengguna.dart';
+import 'package:marketku/models/produk.dart';
 import 'package:marketku/widgets/choice_chip.dart';
 import 'package:marketku/widgets/produk_card.dart';
 
@@ -96,9 +97,9 @@ class _MyJasaPageState extends State<MyJasaPage> {
                             jasa!.length,
                             (int i) {
                               return MyProdukCard(
+                                jenisProduk: JenisProduk.jasa,
                                 produk: jasa[i],
                                 pemilik: MyApp.pengguna!,
-                                currentUserIsPemilik: true,
                               );
                             },
                           ),

@@ -8,19 +8,20 @@ import 'package:marketku/models/jasa_favorit.dart';
 import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/models/produk.dart';
 import 'package:marketku/pages/home/home.dart';
+import 'package:marketku/pages/home/pages/marketku/pages/edit_produk/edit_produk.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyDetailProdukPage extends StatefulWidget {
-  const MyDetailProdukPage(
-      {Key? key,
-      required this.produk,
-      required this.pemilik,
-      this.currentUserIsPemilik = false})
-      : super(key: key);
+  const MyDetailProdukPage({
+    Key? key,
+    required this.jenisProduk,
+    required this.produk,
+    required this.pemilik,
+  }) : super(key: key);
 
+  final JenisProduk jenisProduk;
   final Produk produk;
   final Pengguna pemilik;
-  final bool currentUserIsPemilik;
 
   @override
   State<MyDetailProdukPage> createState() => _MyDetailProdukPageState();
@@ -243,7 +244,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                 Icons.arrow_back,
                 shadows: isShrink && isOnLightMode
                     ? null
-                    : [const Shadow(blurRadius: 2)],
+                    : [const Shadow(blurRadius: 3)],
               ),
               tooltip: 'Kembali',
               color: isShrink && isOnLightMode ? Colors.black : Colors.white,
@@ -255,81 +256,122 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
               style: TextStyle(
                 shadows: isShrink && isOnLightMode
                     ? null
-                    : [const Shadow(blurRadius: 2)],
+                    : [const Shadow(blurRadius: 3)],
               ),
             ),
             actions: [
               Visibility(
-                visible: widget.currentUserIsPemilik,
-                child: IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return AlertDialog(
-                          title: const Text('Hapus produk'),
-                          content: const Text(
-                              'Apakah anda yakin ingin menghapus produk ini?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Batal'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                final pengguna = await Pengguna.getById(
-                                    FirebaseAuth.instance.currentUser!.uid);
-
-                                // Show progress indicator
-                                showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) {
-                                    return const AlertDialog(
-                                      backgroundColor: Colors.transparent,
-                                      elevation: 0,
-                                      content: Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    );
-                                  },
-                                );
-
-                                pengguna!.removeProduk(widget.produk).then((_) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Produk berhasil dihapus!'),
-                                    ),
-                                  );
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (_) => const MyHomePage(
-                                        initialPageIndex: 1,
-                                      ),
-                                    ),
-                                  );
-                                });
-                              },
-                              child: const Text(
-                                'Hapus',
-                                style: TextStyle(color: Colors.red),
+                visible: widget.produk.idPengguna == MyApp.pengguna?.id,
+                child: PopupMenuButton(
+                  offset: const Offset(0, kToolbarHeight - 10),
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: isShrink ? Colors.black : Colors.white,
+                    shadows: isShrink ? null : [const Shadow(blurRadius: 4)],
+                  ),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      onTap: () {
+                        Future.delayed(const Duration(seconds: 0)).then((_) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MyEditProdukPage(
+                                jenisProduk: widget.jenisProduk,
+                                produk: widget.produk,
                               ),
                             ),
-                          ],
+                          );
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.edit,
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text('Edit Produk'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      onTap: () async {
+                        await Future.delayed(const Duration(seconds: 0));
+                        showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: const Text('Hapus produk'),
+                              content: const Text(
+                                  'Apakah anda yakin ingin menghapus produk ini?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Batal'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    final pengguna = await Pengguna.getById(
+                                        FirebaseAuth.instance.currentUser!.uid);
+
+                                    // Show progress indicator
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (_) {
+                                        return const AlertDialog(
+                                          backgroundColor: Colors.transparent,
+                                          elevation: 0,
+                                          content: Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      },
+                                    );
+
+                                    pengguna!
+                                        .removeProduk(widget.produk)
+                                        .then((_) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Produk berhasil dihapus!'),
+                                        ),
+                                      );
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (_) => const MyHomePage(
+                                            initialPageIndex: 1,
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  child: const Text(
+                                    'Hapus',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                  tooltip: 'Hapus produk',
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  ),
+                      child: Row(
+                        children: const [
+                          Icon(Icons.delete, color: Colors.red),
+                          SizedBox(width: 8),
+                          Text('Hapus Produk'),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(width: 8),
@@ -347,7 +389,7 @@ class _MyDetailProdukPageState extends State<MyDetailProdukPage> {
                             widget.produk.nama,
                             style: const TextStyle(
                               overflow: TextOverflow.ellipsis,
-                              shadows: [Shadow(blurRadius: 2)],
+                              shadows: [Shadow(blurRadius: 3)],
                             ),
                             maxLines: 2,
                           ),

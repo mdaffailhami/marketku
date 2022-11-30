@@ -12,6 +12,7 @@ class MyTextFormField extends StatelessWidget {
     this.textInputAction,
     this.suffixIcon,
     this.prefix,
+    this.suffix,
     this.maxLines,
     this.verticalPadding,
     this.controller,
@@ -27,8 +28,9 @@ class MyTextFormField extends StatelessWidget {
   final String? initialValue;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
-  final Widget? suffixIcon;
   final Widget? prefix;
+  final Widget? suffix;
+  final Widget? suffixIcon;
   final int? maxLines;
   final double? verticalPadding;
   final TextEditingController? controller;
@@ -63,8 +65,9 @@ class MyTextFormField extends StatelessWidget {
             ),
         contentPadding: EdgeInsets.symmetric(
             horizontal: 12, vertical: verticalPadding ?? 0),
-        suffixIcon: suffixIcon,
         prefix: prefix,
+        suffix: suffix,
+        suffixIcon: suffixIcon,
       ),
     );
   }

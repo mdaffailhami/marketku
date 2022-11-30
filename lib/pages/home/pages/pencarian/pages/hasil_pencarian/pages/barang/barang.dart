@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marketku/models/pengguna.dart';
 import 'package:marketku/models/barang.dart';
+import 'package:marketku/models/produk.dart';
 import 'package:marketku/widgets/choice_chip.dart';
 import 'package:marketku/widgets/produk_card.dart';
 
@@ -115,6 +116,7 @@ class _MyBarangPageState extends State<MyBarangPage> {
                                 final pemilik = snapshot.data!;
 
                                 return MyProdukCard(
+                                  jenisProduk: JenisProduk.barang,
                                   produk: barang[i],
                                   pemilik: pemilik,
                                 );
