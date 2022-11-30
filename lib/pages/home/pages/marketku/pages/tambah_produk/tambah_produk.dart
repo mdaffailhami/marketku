@@ -110,6 +110,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
   void onProdukBerhasilDitambahkan() {
     showSnackBar('Produk berhasil ditambahkan!');
 
+    Navigator.of(context).pop();
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => const MyHomePage(
