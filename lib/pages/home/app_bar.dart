@@ -243,7 +243,8 @@ class MyAppBar extends StatelessWidget {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text(
+                                    title: const Text('Keluar akun'),
+                                    content: const Text(
                                       'Apakah anda yakin ingin keluar?',
                                     ),
                                     actions: [
