@@ -194,11 +194,11 @@ class _MyProfilPageState extends State<MyProfilPage> {
                           right: 3,
                           child: FloatingActionButton.small(
                             onPressed: () {},
-                            shape: CircleBorder(),
+                            shape: const CircleBorder(),
                             elevation: 0,
                             backgroundColor:
                                 Theme.of(context).colorScheme.secondary,
-                            child: Icon(Icons.camera_alt_outlined),
+                            child: const Icon(Icons.camera_alt_outlined),
                           ),
                         ),
                       ],

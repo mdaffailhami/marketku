@@ -232,12 +232,44 @@ class MyAppBar extends StatelessWidget {
                           ),
                           PopupMenuItem(
                             onTap: () async {
-                              await FirebaseAuth.instance.signOut();
+                              await Future.delayed(Duration.zero);
 
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (_) => const MyHomePage(),
-                                ),
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      'Apakah anda yakin ingin keluar?',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        child: const Text('Batal'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          FirebaseAuth.instance.signOut().then(
+                                            (_) {
+                                              Navigator.of(context)
+                                                  .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      const MyMaterialApp(),
+                                                ),
+                                                (_) => false,
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Keluar',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             },
                             child: Row(

@@ -55,10 +55,11 @@ class _MySignUpPageState extends State<MySignUpPage> {
   }
 
   void gantiKeHalamanSignIn() {
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => const MySignInPage(),
       ),
+      (_) => false,
     );
   }
 
