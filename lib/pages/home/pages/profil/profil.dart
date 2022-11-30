@@ -164,8 +164,24 @@ class _MyProfilPageState extends State<MyProfilPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: InkWell(
-                  onTap: pilihFoto,
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierColor: Colors.black87,
+                      builder: (context) => Dialog(
+                        child: Builder(builder: (_) {
+                          if (foto != null) {
+                            return Image.file(foto!);
+                          } else {
+                            return Image.network(
+                              MyApp.pengguna!.urlFotoProfil ?? defaultUrlFoto,
+                            );
+                          }
+                        }),
+                      ),
+                    );
+                  },
                   child: SizedBox(
                     width: imageSize.width,
                     height: imageSize.height,
@@ -182,6 +198,7 @@ class _MyProfilPageState extends State<MyProfilPage> {
                                         .colorScheme
                                         .secondaryContainer,
                                     backgroundImage: FileImage(foto!),
+                                    radius: 70,
                                   )
                                 : CircleAvatar(
                                     backgroundColor: Theme.of(context)
@@ -199,7 +216,7 @@ class _MyProfilPageState extends State<MyProfilPage> {
                           bottom: 3,
                           right: 3,
                           child: FloatingActionButton.small(
-                            onPressed: () {},
+                            onPressed: pilihFoto,
                             shape: const CircleBorder(),
                             elevation: 0,
                             backgroundColor:
