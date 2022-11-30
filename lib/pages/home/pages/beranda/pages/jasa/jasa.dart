@@ -27,7 +27,7 @@ class _MyJasaPageState extends State<MyJasaPage> {
           children: [
             const MyBanner(
               imageAsset: 'assets/jasa-page-banner.jpg',
-              text: 'Kami menyediakan berbagai jasa yang layak untuk anda!',
+              text: 'Kami menyediakan berbagai barang dan jasa',
             ),
             const SizedBox(height: 12),
             Text(

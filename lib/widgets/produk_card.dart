@@ -57,6 +57,7 @@ class MyProdukCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Stack(
+                    fit: StackFit.expand,
                     children: [
                       Image.network(
                         produk.urlFoto,

@@ -106,6 +106,7 @@ class _MyEditProdukPageState extends State<MyEditProdukPage> {
       pengguna!
           .addProduk(
             Barang(
+              id: widget.produk.id,
               idPengguna: pengguna.id,
               urlFoto: urlFoto,
               nama: nama,
@@ -119,6 +120,7 @@ class _MyEditProdukPageState extends State<MyEditProdukPage> {
       pengguna!
           .addProduk(
             Jasa(
+              id: widget.produk.id,
               idPengguna: pengguna.id,
               urlFoto: urlFoto,
               nama: nama,

@@ -52,64 +52,70 @@ class _MyBarangPageState extends State<MyBarangPage> {
               ),
             ),
             const SizedBox(height: 4),
-            Column(
-              children: [
-                Center(
-                  child: FutureBuilder(
-                    future: selectedKategoriIndex == -1
-                        ? Pengguna.getBarangFavorit()
-                        : Pengguna.getBarangFavorit(
-                            kategori:
-                                KategoriBarang.values[selectedKategoriIndex],
+            SizedBox(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Center(
+                    child: FutureBuilder(
+                      future: selectedKategoriIndex == -1
+                          ? Pengguna.getBarangFavorit()
+                          : Pengguna.getBarangFavorit(
+                              kategori:
+                                  KategoriBarang.values[selectedKategoriIndex],
+                            ),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                              child: Text('Gagal memuat produk!'));
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Padding(
+                            padding: EdgeInsets.only(top: 50),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+
+                        final List<Barang>? barang = snapshot.data;
+
+                        return Wrap(
+                          alignment: WrapAlignment.start,
+                          runAlignment: WrapAlignment.start,
+                          children: List.generate(
+                            barang!.length,
+                            (int i) {
+                              return FutureBuilder(
+                                future: Pengguna.getById(barang[i].idPengguna),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return const Center(
+                                        child: Text('Gagal memuat produk!'));
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const SizedBox.shrink();
+                                  }
+
+                                  final pemilik = snapshot.data!;
+
+                                  return MyProdukCard(
+                                    jenisProduk: JenisProduk.barang,
+                                    produk: barang[i],
+                                    pemilik: pemilik,
+                                  );
+                                },
+                              );
+                            },
                           ),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                            child: Text('Gagal memuat produk!'));
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Padding(
-                          padding: EdgeInsets.only(top: 50),
-                          child: Center(child: CircularProgressIndicator()),
                         );
-                      }
-
-                      final List<Barang>? barang = snapshot.data;
-
-                      return Wrap(
-                        children: List.generate(
-                          barang!.length,
-                          (int i) {
-                            return FutureBuilder(
-                              future: Pengguna.getById(barang[i].idPengguna),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return const Center(
-                                      child: Text('Gagal memuat produk!'));
-                                }
-
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const SizedBox.shrink();
-                                }
-
-                                final pemilik = snapshot.data!;
-
-                                return MyProdukCard(
-                                  jenisProduk: JenisProduk.barang,
-                                  produk: barang[i],
-                                  pemilik: pemilik,
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      );
-                    },
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

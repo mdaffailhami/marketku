@@ -27,7 +27,7 @@ class _MyBarangPageState extends State<MyBarangPage> {
           children: [
             const MyBanner(
               imageAsset: 'assets/barang-page-banner.jpg',
-              text: 'Kami menyediakan berbagai barang yang layak untuk anda!',
+              text: 'Kami menyediakan berbagai barang dan jasa',
             ),
             const SizedBox(height: 12),
             Text(
