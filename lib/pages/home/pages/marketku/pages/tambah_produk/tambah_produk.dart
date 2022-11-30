@@ -214,6 +214,7 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
                               defaultUrlFoto,
                               width: imageSize.width,
                               height: imageSize.height,
+                              fit: BoxFit.cover,
                             ),
                       Positioned(
                         bottom: 0,
@@ -249,10 +250,13 @@ class _MyTambahProdukPageState extends State<MyTambahProdukPage> {
                 verticalPadding: 12,
               ),
               MyTextFormField(
-                onChanged: (String value) => harga.nilai = num.parse(value),
+                onChanged: (String value) => setState(
+                  () => harga.nilai = value.isEmpty ? 0 : num.parse(value),
+                ),
                 labelText: 'Harga',
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
+                suffix: Text('($harga)'),
               ),
               Text('Jenis', style: Theme.of(context).textTheme.titleLarge),
               Row(
