@@ -22,7 +22,7 @@ class _MyResetPasswordDialogState extends State<MyResetPasswordDialog> {
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: const Text('Kirim email verifikasi'),
+            title: const Text('Verifikasi email'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -30,12 +30,49 @@ class _MyResetPasswordDialogState extends State<MyResetPasswordDialog> {
               ),
               TextButton(
                 onPressed: () async {
+                  // show progress indicator
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (_) {
+                      return WillPopScope(
+                        onWillPop: () async => false,
+                        child: const AlertDialog(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          content: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+
                   final kirim = await Akun.resetPassword(alamatEmail);
 
                   if (kirim.sukses) {
-                    popDialog();
-                    popDialog();
-                    showSnackBar(text: kirim.pesan);
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Verifikasi email'),
+                          content: Text(
+                            'Kami telah mengirimkan email verifikasi ke $alamatEmail.\n\nJika email tidak masuk, silahkan cek pada bagian email spam!',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                popDialog();
+                                popDialog();
+                                popDialog();
+                                popDialog();
+                              },
+                              child: const Text('Saya Mengerti'),
+                            )
+                          ],
+                        );
+                      },
+                    );
                   } else {
                     if (kirim.pesan == 'user-not-found' ||
                         kirim.pesan == 'invalid-email') {
@@ -47,6 +84,7 @@ class _MyResetPasswordDialogState extends State<MyResetPasswordDialog> {
                       );
                     }
 
+                    popDialog();
                     popDialog();
                     formKey.currentState!.validate();
                   }

@@ -99,6 +99,9 @@ class MyAppBar extends StatelessWidget {
                           ),
                           PopupMenuItem(
                             onTap: () {
+                              debugPrint(FirebaseAuth
+                                  .instance.currentUser!.emailVerified
+                                  .toString());
                               Future.delayed(Duration.zero).then((_) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(

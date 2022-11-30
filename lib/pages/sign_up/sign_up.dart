@@ -38,11 +38,27 @@ class _MySignUpPageState extends State<MySignUpPage> {
       final Respon addAkun = await Akun.add(akun);
 
       if (addAkun.sukses) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Akun berhasil didaftarkan!')),
-        );
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Verifikasi email'),
+              content: Text(
+                'Kami telah mengirimkan email verifikasi ke ${akun.alamatEmail}.\n\nJika email tidak masuk, silahkan cek pada bagian email spam!',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
 
-        gantiKeHalamanSignIn();
+                    gantiKeHalamanSignIn();
+                  },
+                  child: const Text('Saya Mengerti'),
+                )
+              ],
+            );
+          },
+        );
       } else {
         if (addAkun.pesan == 'email-already-in-use') {
           isEmailAlreadyInUse = true;
@@ -152,7 +168,10 @@ class _MySignUpPageState extends State<MySignUpPage> {
                                     )
                                   : const SizedBox(height: 12),
                               TextButton(
-                                onPressed: () => daftarkanAkun(),
+                                onPressed: () {
+                                  daftarkanAkun();
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                },
                                 style: TextButton.styleFrom(
                                   backgroundColor: Theme.of(context)
                                               .brightness ==

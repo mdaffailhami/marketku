@@ -110,25 +110,35 @@ class MyMaterialApp extends StatelessWidget {
               darkTheme: darkTheme,
               home: MySplashScreen(
                 duration: const Duration(seconds: 2),
-                home: FirebaseAuth.instance.currentUser == null
-                    ? const MySignInPage()
-                    : FutureBuilder(
-                        future: Pengguna.getById(
-                            FirebaseAuth.instance.currentUser!.uid),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Scaffold(
-                              body: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          }
+                home: Builder(
+                  builder: (_) {
+                    final user = FirebaseAuth.instance.currentUser;
 
-                          MyApp.pengguna = snapshot.data;
+                    // Jika tidak ada user yang signed in atau ada user tapi belum verifikasi
+                    if (user == null || !user.emailVerified) {
+                      return const MySignInPage();
+                    }
 
-                          return const MyHomePage();
-                        }),
+                    return FutureBuilder(
+                      future: Pengguna.getById(
+                          FirebaseAuth.instance.currentUser!.uid),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Scaffold(
+                            body: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        MyApp.pengguna = snapshot.data;
+
+                        return const MyHomePage();
+                      },
+                    );
+                  },
+                ),
               ),
             );
           },

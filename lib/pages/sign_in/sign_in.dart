@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marketku/main.dart';
@@ -40,6 +41,70 @@ class _MySignInPageState extends State<MySignInPage> {
           isUserNotFound = true;
         } else if (masuk.pesan == 'wrong-password') {
           isPasswordWrong = true;
+        } else if (masuk.pesan == 'belum-verifikasi') {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Anda belum verifikasi'),
+                content: const Text(
+                    'Anda belum bisa masuk sebab anda belum memverifikasi email anda!\n\nApakah anda ingin agar kami kirimkan ulang email verifikasinya?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Batal'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (_) {
+                          // show progress indicator
+                          return WillPopScope(
+                            onWillPop: () async => false,
+                            child: const AlertDialog(
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                              content: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+
+                      FirebaseAuth.instance.currentUser!
+                          .sendEmailVerification()
+                          .then((value) {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Verifikasi email'),
+                              content: Text(
+                                'Kami telah mengirimkan email verifikasi ke $alamatEmail.\n\nJika email tidak masuk, silahkan cek pada bagian email spam!',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text('Saya Mengerti'),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      });
+                    },
+                    child: const Text('Kirim'),
+                  ),
+                ],
+              );
+            },
+          );
         } else {
           showSnackBar(
             text: 'Masuk gagal!(${masuk.pesan}',
@@ -180,7 +245,10 @@ class _MySignInPageState extends State<MySignInPage> {
                                     )
                                   : const SizedBox(height: 8),
                               TextButton(
-                                onPressed: () => masuk(),
+                                onPressed: () {
+                                  masuk();
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                },
                                 style: TextButton.styleFrom(
                                   backgroundColor: Theme.of(context)
                                               .brightness ==

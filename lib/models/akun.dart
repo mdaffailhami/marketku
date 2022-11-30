@@ -23,6 +23,8 @@ class Akun {
         password: akun._kataSandi,
       );
 
+      userCredential.user!.sendEmailVerification();
+
       final pengguna = Pengguna(
           id: userCredential.user!.uid,
           nama: akun.nama,
@@ -41,10 +43,15 @@ class Akun {
 
   static Future<Respon> masuk(String alamatEmail, String kataSandi) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: alamatEmail, password: kataSandi);
+      final user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: alamatEmail, password: kataSandi))
+          .user;
 
-      return Respon(sukses: true, pesan: 'Masuk berhasil!');
+      if (user!.emailVerified) {
+        return Respon(sukses: true, pesan: 'Masuk berhasil!');
+      } else {
+        return Respon(sukses: false, pesan: 'belum-verifikasi');
+      }
     } catch (e) {
       return Respon(sukses: false, pesan: (e as FirebaseAuthException).code);
     }
