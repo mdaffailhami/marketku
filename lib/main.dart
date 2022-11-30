@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
 
   static SharedPreferences? prefs;
   static final themeMode = ValueNotifier(ThemeMode.system);
-  static final seedColor = ValueNotifier(const Color(0xFF0463F1));
+  static final seedColor = ValueNotifier(const Color(0xFF3120E0));
   static Pengguna? pengguna;
 
   @override

@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart' as lol;
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:marketku/main.dart';
-import 'package:marketku/pages/home/home.dart';
 import 'package:marketku/pages/home/pages/profil/profil.dart';
 import 'package:marketku/widgets/marketku_logotype.dart';
 
@@ -345,7 +344,6 @@ class _MyColorPickerState extends State<MyColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    // lol.SlidePicker()
     return AlertDialog(
       title: const Text('Pilih warna aplikasi'),
       actions: [
@@ -369,7 +367,7 @@ class _MyColorPickerState extends State<MyColorPicker> {
       ],
       // contentPadding: EdgeInsets.all(0),
       content: SingleChildScrollView(
-        child: lol.ColorPicker(
+        child: ColorPicker(
           enableAlpha: false,
           hexInputBar: true,
           pickerColor: MyApp.seedColor.value,
